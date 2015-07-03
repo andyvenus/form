@@ -9,6 +9,11 @@
             "email": "andy@avscripts.net"
         }
     ],
+    "autoload": {
+      "psr-4": {
+        "AV\\Form\\": ""
+      }
+    },
     "minimum-stability": "dev",
     "require": {}
 }
