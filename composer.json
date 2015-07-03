@@ -1,0 +1,14 @@
+{
+    "name": "andyvenus/form",
+    "description": "A framework agnostic form builder",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andy Venus",
+            "email": "andy@avscripts.net"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
