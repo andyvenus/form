@@ -436,18 +436,18 @@ class FormHandler
      */
     public function fieldHasError($fieldName)
     {
+        foreach ($this->errors as $error) {
+            if ($error->getParam() == $fieldName) {
+                return true;
+            }
+        }
+
         if (!$this->isSubmitted()) {
             return false;
         }
 
         if (isset($this->validator) && $this->validator->fieldHasError($fieldName)) {
             return true;
-        }
-
-        foreach ($this->errors as $error) {
-            if ($error->getParam() == $fieldName) {
-                return true;
-            }
         }
     }
 
