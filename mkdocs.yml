@@ -1,0 +1,9 @@
+site_name: AV Forms
+
+pages:
+- Home: 'index.md'
+- Laravel:
+    - 'Basics': 'laravel-basics.md'
+    - 'Validation': 'laravel-validation.md'
+- Blueprints: 'form-blueprints.md'
+- Fields: 'fields.md'
