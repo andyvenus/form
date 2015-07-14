@@ -32,12 +32,12 @@ class CollectionType implements TypeInterface
 
     public function allowUnsetRequest($field)
     {
-        return (isset($field['options']['allow_unset']) && $field['options']['allow_unset'] === true); // technically will never be true
+        return true;
     }
 
     public function getUnsetRequestData($field)
     {
-        return null;
+        return [];
     }
 
     public function isValidRequestData($field, $data)
