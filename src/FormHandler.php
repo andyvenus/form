@@ -608,6 +608,10 @@ class FormHandler
 
     protected function shouldShowSuccessMessage()
     {
+        if (!$this->form->getSuccessMessage()) {
+            return false;
+        }
+
         if ($this->isValid()) {
             return true;
         }
