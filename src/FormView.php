@@ -353,8 +353,11 @@ class FormView implements FormViewInterface
     public function getJsonResponseData()
     {
         $arrErrors = [];
-        foreach ($this->errors as $error) {
-            $arrErrors[] = $error->toArray();
+
+        if (isset($this->errors)) {
+            foreach ($this->errors as $error) {
+                $arrErrors[] = $error->toArray();
+            }
         }
 
         $json['errors'] = $arrErrors;
