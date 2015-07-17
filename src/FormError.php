@@ -69,4 +69,9 @@ class FormError implements \Serializable
     {
         $this->data = unserialize($serialized);
     }
+
+    public function toArray()
+    {
+        return $this->data;
+    }
 }
