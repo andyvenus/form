@@ -120,6 +120,11 @@ class FormHandler
     protected $restoreDataHandler;
 
     /**
+     * @var string When a form was marked as not submitted, this was the first field found to not be submitted
+     */
+    protected $missingField = null;
+
+    /**
      * @param FormBlueprintInterface $form
      * @param \AV\Form\RequestHandler\RequestHandlerInterface|null $requestHandler
      * @param EntityProcessorInterface $entityProcessor
@@ -316,6 +321,7 @@ class FormHandler
             // Form was not submitted
             if ($fieldSubmitted === false) {
                 $this->submitted = false;
+                $this->missingField = $field['name'];
                 break;
             }
             else {
@@ -817,6 +823,15 @@ class FormHandler
     public function setTransformerManager(TransformerManager $transformerManager)
     {
         $this->transformerManager = $transformerManager;
+    }
+
+    /**
+     * For debugging. If a form doesn't seem to be registering as submitted, use this to find the field that was missing
+     * from the request or invalid
+     */
+    public function getMissingField()
+    {
+        return $this->missingField;
     }
 
     /**
