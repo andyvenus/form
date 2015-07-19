@@ -143,27 +143,27 @@
 <p>The first thing you need to do is create a form blueprint. See the <a href="../form-blueprints/">form blueprints</a> page for more info.</p>
 <h2 id="using-the-formbuilder-to-build-the-form">Using the FormBuilder to build the form</h2>
 <p>You will need to build your form in a controller. To do this you will need <code>AV\LaravelForm\FormBuilder</code>, but it's easy to get access to. Just type-hint it on your controller method and it will be automatically injected by Laravel</p>
-<pre><code>use AV\LaravelForm\FormBuilder;
+<pre><code>use Form;
 
 // within your controller
-public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+public function myControllerMethod(Request $request) 
 {
     $blueprint = new MyForm();
 
-    $form = $formBuilder-&gt;build($blueprint);
+    $form = Form::build($blueprint);
 }
 </code></pre>
 <p>After building your form, you are given an instance of <code>AV\Form\FormHandler</code></p>
 <h2 id="create-the-view-and-render-the-form">Create the view and render the form</h2>
 <p>To get a form ready to be rendered you need to call <code>createView()</code> on your built form. It's easiest to do this right at the point you pass it to the view</p>
-<pre><code>use AV\LaravelForm\FormBuilder;
+<pre><code>use Form;
 
 // within your controller
-public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+public function myControllerMethod(Request $request) 
 {
     $blueprint = new MyForm();
 
-    $form = $formBuilder-&gt;build($blueprint);
+    $form = Form::build($blueprint);
 
     return view('my_template')-&gt;with('form', $form-&gt;createView());
 }
@@ -181,11 +181,11 @@ public function myControllerMethod(Request $request, FormBuilder $formBuilder)
 <p>You can then check to see if the form was submitted using the <code>isSubmitted()</code> and <code>isValid()</code> methods on the built form.</p>
 <h3 id="one-page-form-submission">One-page form submission</h3>
 <p>The simplest controller flow looks like this when a form submits to the same place it is displayed</p>
-<pre><code>public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+<pre><code>public function myControllerMethod(Request $request) 
 {
     $blueprint = new MyForm();
 
-    $form = $formBuilder-&gt;build($blueprint, $request);
+    $form = Form::build($blueprint, $request);
 
     // form was submitted &amp; valid
     if ($form-&gt;isValid()) {
@@ -199,11 +199,11 @@ public function myControllerMethod(Request $request, FormBuilder $formBuilder)
 </code></pre>
 <h3 id="submit-redirect">Submit &amp; Redirect</h3>
 <p>But you may want to redirect users after the form is submitted to avoid accidental resubmissions of forms:</p>
-<pre><code>public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+<pre><code>public function myControllerMethod(Request $request) 
 {
     $blueprint = new MyForm();
 
-    $form = $formBuilder-&gt;build($blueprint, $request);
+    $form = Form::build($blueprint, $request);
 
     // form was valid
     if ($form-&gt;isValid()) {
@@ -226,13 +226,13 @@ public function myControllerMethod(Request $request, FormBuilder $formBuilder)
 <p>If you redirect right after a form submission, the form will be automatically repopulated with the submitted data. If you don't want to restore the submitted data to the form after the redirect, call <code>$form-&gt;cancelRestore()</code> before you redirect.</p>
 <h3 id="binding-a-model">Binding a model</h3>
 <p>To bind a model to a form, you can pass it as the 3rd parameter of the FormBuilder <code>build()</code> method or use the <code>bindEntity()</code> method on your built form.</p>
-<pre><code>public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+<pre><code>public function myControllerMethod(Request $request) 
 {
     // Get a 'car'
     $car = Car::find(1);
 
     // Bind it using the 3rd parameter of the build method
-    $form = $formBuilder-&gt;build(new MyForm(), $request, $car);
+    $form = Form::build(new MyForm(), $request, $car);
 
     // ALTERNATIVELY bind the model after the form has been built
     // $form-&gt;bindEntity($car);
