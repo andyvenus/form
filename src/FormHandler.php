@@ -777,6 +777,9 @@ class FormHandler
                 }
             }
         }
+
+        // Call isValid to update valid status in restore data handlers
+        $this->isValid();
     }
 
     /**
