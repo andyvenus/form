@@ -216,10 +216,10 @@ public function myControllerMethod(Request $request, FormBuilder $formBuilder)
 
     // check if the form was submitted. if yes, redirect the user back as the form was not valid
     if ($form-&gt;isSubmitted()) {
-        return redirect()-&gt;back();
+        return back();
     }
 
-    // otherwise, just render the page
+    // otherwise, just render the page that shows the form
     return view('my_template')-&gt;with('form', $form-&gt;createView());
 }
 </code></pre>
@@ -229,13 +229,13 @@ public function myControllerMethod(Request $request, FormBuilder $formBuilder)
 <pre><code>public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
 {
     // Get a 'car'
-    $car = Car::first(1);
+    $car = Car::find(1);
 
     // Bind it using the 3rd parameter of the build method
     $form = $formBuilder-&gt;build(new MyForm(), $request, $car);
 
     // ALTERNATIVELY bind the model after the form has been built
-    $form-&gt;bindEntity($car);
+    // $form-&gt;bindEntity($car);
 </code></pre>
 <p>You can then save the form values to the model by calling <code>saveToEntities()</code> on your built form. This only assignes the form values to the model, so remember to then call <code>save()</code> on your model to save it's data to the database.</p>
 <pre><code>    if ($form-&gt;isValid()) {

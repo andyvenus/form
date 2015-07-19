@@ -158,6 +158,8 @@
 <p>The label displayed next to the field</p>
 <h4 id="help">help</h4>
 <p>Any useful information you want to display next to the field. Can contain HTML.</p>
+<h4 id="required">required</h4>
+<p>If set to true, the field must not be left blank by the user and an asterisk will be shown next to the label.</p>
 <h4 id="allow_unset">allow_unset</h4>
 <p>Forms work out if they were submitted by the existence of the form data in the GET or POST request. If a field is missing from the request, the form will not consider itself submitted. If <code>allow_unset</code> is <code>true</code>, that field can be missing from the submitted data. This is specifically for allowing fields to be outright missing from the request, fields simply left blank by the user are always considered submitted.</p>
 <p>Be warned, if your form is made out of entirely of fields that can be unset, there'll be no way for the form to know if it's submitted. Consider adding a hidden field if you want to allow all other fields to be unset.</p>
