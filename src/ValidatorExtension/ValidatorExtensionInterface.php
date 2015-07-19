@@ -20,15 +20,6 @@ interface ValidatorExtensionInterface {
     public function setFormHandler(FormHandler $formHandler);
 
     /**
-     * Validate the form
-     *
-     * @param null $scope
-     * @param null $options
-     * @return mixed
-     */
-    public function validate($scope = null, $options = null);
-
-    /**
      * Check if the form is valid or not
      *
      * @param $scope

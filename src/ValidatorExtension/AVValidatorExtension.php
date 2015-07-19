@@ -51,7 +51,7 @@ class AVValidatorExtension implements ValidatorExtensionInterface, ContainerAwar
         $this->formHandler = $formHandler;
     }
 
-    public function validate($scope = Validator::SCOPE_ALL, $options = null)
+    protected function validate($scope = Validator::SCOPE_ALL, $options = null)
     {
         if (!$this->validationRun) {
             $form = $this->formHandler->getFormBlueprint();
