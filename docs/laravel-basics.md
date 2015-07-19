@@ -95,10 +95,10 @@ But you may want to redirect users after the form is submitted to avoid accident
                 
         // check if the form was submitted. if yes, redirect the user back as the form was not valid
         if ($form->isSubmitted()) {
-            return redirect()->back();
+            return back();
         }
         
-        // otherwise, just render the page
+        // otherwise, just render the page that shows the form
         return view('my_template')->with('form', $form->createView());
     }
 
@@ -111,13 +111,13 @@ To bind a model to a form, you can pass it as the 3rd parameter of the FormBuild
     public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
     {
         // Get a 'car'
-        $car = Car::first(1);
+        $car = Car::find(1);
             
         // Bind it using the 3rd parameter of the build method
         $form = $formBuilder->build(new MyForm(), $request, $car);
         
         // ALTERNATIVELY bind the model after the form has been built
-        $form->bindEntity($car);
+        // $form->bindEntity($car);
         
 You can then save the form values to the model by calling `saveToEntities()` on your built form. This only assignes the form values to the model, so remember to then call `save()` on your model to save it's data to the database.
         

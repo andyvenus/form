@@ -18,6 +18,10 @@ The label displayed next to the field
 
 Any useful information you want to display next to the field. Can contain HTML.
 
+#### required
+
+If set to true, the field must not be left blank by the user and an asterisk will be shown next to the label.
+
 #### allow_unset
 
 Forms work out if they were submitted by the existence of the form data in the GET or POST request. If a field is missing from the request, the form will not consider itself submitted. If `allow_unset` is `true`, that field can be missing from the submitted data. This is specifically for allowing fields to be outright missing from the request, fields simply left blank by the user are always considered submitted.
