@@ -174,6 +174,8 @@ class FormView implements FormViewInterface
     }
 
     /**
+     * Get fields for a certain section
+     *
      * @param $section
      * @return array
      */
@@ -182,6 +184,23 @@ class FormView implements FormViewInterface
         $matchedFields = array();
         foreach ($this->fields as $fieldName => $field) {
             if (isset($field['options']['section']) && $field['options']['section'] == $section) {
+                $matchedFields[$fieldName] = $field;
+            }
+        }
+
+        return $matchedFields;
+    }
+
+    /**
+     * Get any fields that don't have a section set
+     *
+     * @return array
+     */
+    public function getFieldsWithoutSection()
+    {
+        $matchedFields = array();
+        foreach ($this->fields as $fieldName => $field) {
+            if (!isset($field['options']['section']) || $field['options']['section'] == null) {
                 $matchedFields[$fieldName] = $field;
             }
         }
