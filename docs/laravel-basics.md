@@ -8,14 +8,14 @@ The first thing you need to do is create a form blueprint. See the [form bluepri
 
 You will need to build your form in a controller. To do this you will need `AV\LaravelForm\FormBuilder`, but it's easy to get access to. Just type-hint it on your controller method and it will be automatically injected by Laravel
 
-    use AV\LaravelForm\FormBuilder;
+    use Form;
 
     // within your controller
-    public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+    public function myControllerMethod(Request $request) 
     {
         $blueprint = new MyForm();
         
-        $form = $formBuilder->build($blueprint);
+        $form = Form::build($blueprint);
     }
     
 After building your form, you are given an instance of `AV\Form\FormHandler`
@@ -24,14 +24,14 @@ After building your form, you are given an instance of `AV\Form\FormHandler`
 
 To get a form ready to be rendered you need to call `createView()` on your built form. It's easiest to do this right at the point you pass it to the view
 
-    use AV\LaravelForm\FormBuilder;
+    use Form;
 
     // within your controller
-    public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+    public function myControllerMethod(Request $request) 
     {
         $blueprint = new MyForm();
         
-        $form = $formBuilder->build($blueprint);
+        $form = Form::build($blueprint);
         
         return view('my_template')->with('form', $form->createView());
     }
@@ -58,11 +58,11 @@ You can then check to see if the form was submitted using the `isSubmitted()` an
 
 The simplest controller flow looks like this when a form submits to the same place it is displayed
 
-    public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+    public function myControllerMethod(Request $request) 
     {
         $blueprint = new MyForm();
         
-        $form = $formBuilder->build($blueprint, $request);
+        $form = Form::build($blueprint, $request);
         
         // form was submitted & valid
         if ($form->isValid()) {
@@ -78,11 +78,11 @@ The simplest controller flow looks like this when a form submits to the same pla
 
 But you may want to redirect users after the form is submitted to avoid accidental resubmissions of forms:
 
-    public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+    public function myControllerMethod(Request $request) 
     {
         $blueprint = new MyForm();
         
-        $form = $formBuilder->build($blueprint, $request);
+        $form = Form::build($blueprint, $request);
         
         // form was valid
         if ($form->isValid()) {
@@ -104,17 +104,19 @@ But you may want to redirect users after the form is submitted to avoid accident
 
 If you redirect right after a form submission, the form will be automatically repopulated with the submitted data. If you don't want to restore the submitted data to the form after the redirect, call `$form->cancelRestore()` before you redirect.
 
-### Binding a model
+## Binding a model
+
+Before binding a model to a form, you must make sure any parameters you want the form to save are set as [fillable](http://laravel.com/docs/5.1/eloquent#mass-assignment) on your eloquent model. The fields must be in the fillable array rather than the inverse using the guarded property.
 
 To bind a model to a form, you can pass it as the 3rd parameter of the FormBuilder `build()` method or use the `bindEntity()` method on your built form.
 
-    public function myControllerMethod(Request $request, FormBuilder $formBuilder) 
+    public function myControllerMethod(Request $request) 
     {
         // Get a 'car'
         $car = Car::find(1);
             
         // Bind it using the 3rd parameter of the build method
-        $form = $formBuilder->build(new MyForm(), $request, $car);
+        $form = Form::build(new MyForm(), $request, $car);
         
         // ALTERNATIVELY bind the model after the form has been built
         // $form->bindEntity($car);
