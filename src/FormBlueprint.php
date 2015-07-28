@@ -414,6 +414,10 @@ class FormBlueprint implements FormBlueprintInterface
                     'type' => 'collection',
                     'fields' => array()
                 );
+
+                if (isset($field['options']['section'])) {
+                    $fieldsArray[$fieldName]['options']['section'] = $field['options']['section'];
+                }
             }
             $fieldsArray[$fieldName]['fields'] = $this->recursiveAddToFields($exploded, $field, $fieldsArray[$fieldName]['fields']);
         }
