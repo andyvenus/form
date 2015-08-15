@@ -55,7 +55,7 @@ class FormView implements FormViewInterface
     /**
      * @var array
      */
-    protected $sections;
+    protected $sections = [];
 
     /**
      * @var FormBlueprintInterface
@@ -369,7 +369,7 @@ class FormView implements FormViewInterface
         }
     }
 
-    public function getJsonResponseData()
+    public function toArray()
     {
         $arrErrors = [];
 
@@ -379,11 +379,20 @@ class FormView implements FormViewInterface
             }
         }
 
-        $json['errors'] = $arrErrors;
-        $json['has_errors'] = $this->hasErrors();
-        $json['success_message'] = $this->getSuccessMessage();
+        $data['errors'] = $arrErrors;
+        $data['has_errors'] = $this->hasErrors();
+        $data['success_message'] = $this->getSuccessMessage();
 
-        return $json;
+        return $data;
+    }
+
+    /**
+     * @return mixed
+     * @deprecated
+     */
+    public function getJsonResponseData()
+    {
+        return $this->toArray();
     }
 
     /**
