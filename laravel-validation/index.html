@@ -129,6 +129,8 @@
         
             <li><a href="#adding-validation-to-a-model">Adding validation to a model</a></li>
         
+            <li><a href="#adding-a-custom-error-message-to-the-form">Adding a custom error message to the form</a></li>
+        
     
     </ul>
 </div></div>
@@ -154,6 +156,25 @@ public function getValidationRules()
         'my_database_field' =&gt; 'max:30',
         'example_url_field' =&gt; 'url'
     ];
+}
+</code></pre>
+<h2 id="adding-a-custom-error-message-to-the-form">Adding a custom error message to the form</h2>
+<p>If you want to set a custom error message on the form, you can do so with the addCustomErrors method on the form handler:</p>
+<pre><code>use AV\Form\FormBlueprint;
+use AV\Form\FormError;
+
+$blueprint = new FormBlueprint();
+
+$blueprint-&gt;add('website_url', 'text', [
+    'label' =&gt; 'A label',
+]);
+
+$form = Form::build($blueprint);
+
+if ($form-&gt;isSubmitted()) {
+    if ($form-&gt;getData('website_url') != 'http://www.google.com') {
+        $form-&gt;addCustomErrors([new FormError('website_url', 'Website URL must be http://www.google.com')]);
+    }
 }
 </code></pre></div>
             

@@ -133,6 +133,8 @@
         
             <li><a href="#checking-if-the-form-was-submitted-valid">Checking if the form was submitted &amp; valid</a></li>
         
+            <li><a href="#binding-a-model">Binding a model</a></li>
+        
     
     </ul>
 </div></div>
@@ -224,7 +226,8 @@ public function myControllerMethod(Request $request)
 }
 </code></pre>
 <p>If you redirect right after a form submission, the form will be automatically repopulated with the submitted data. If you don't want to restore the submitted data to the form after the redirect, call <code>$form-&gt;cancelRestore()</code> before you redirect.</p>
-<h3 id="binding-a-model">Binding a model</h3>
+<h2 id="binding-a-model">Binding a model</h2>
+<p>Before binding a model to a form, you must make sure any parameters you want the form to save are set as <a href="http://laravel.com/docs/5.1/eloquent#mass-assignment">fillable</a> on your eloquent model. The fields must be in the fillable array rather than the inverse using the guarded property.</p>
 <p>To bind a model to a form, you can pass it as the 3rd parameter of the FormBuilder <code>build()</code> method or use the <code>bindEntity()</code> method on your built form.</p>
 <pre><code>public function myControllerMethod(Request $request) 
 {
