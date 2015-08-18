@@ -176,6 +176,8 @@ if ($form-&gt;isSubmitted()) {
         $form-&gt;addCustomErrors([new FormError('website_url', 'Website URL must be http://www.google.com')]);
     }
 }
+
+// if ($form-&gt;isValid()) ... etc
 </code></pre>
 <p>The first parameter of the FormError class is the field name related to the error and the second parameter is the error you want to display.</p></div>
             
