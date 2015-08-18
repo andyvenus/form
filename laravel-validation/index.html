@@ -179,7 +179,7 @@ if ($form-&gt;isSubmitted()) {
 
 // if ($form-&gt;isValid()) ... etc
 </code></pre>
-<p>The first parameter of the FormError class is the field name related to the error and the second parameter is the error you want to display.</p></div>
+<p>The first parameter of the FormError class is the field name related to the error and the second parameter is the error you want to display. When you add a custom error, the form is considered to have validation errors and <code>isValid</code> will return false.</p></div>
             
         </div>
 
