@@ -766,14 +766,14 @@ class FormHandler
     }
 
     /**
-     * Add a custom error to the form
+     * Set a custom error on the form
      *
      * @param $param
      * @param $message
      * @param bool|false $translate
      * @param array $translationParams
      */
-    public function addCustomError($param, $message, $translate = false, $translationParams = array())
+    public function setError($param, $message, $translate = false, $translationParams = array())
     {
         $this->errors[] = new FormError($param, $message, $translate, $translationParams);
 
