@@ -59,6 +59,14 @@ interface RestoreDataHandlerInterface
     public function setValid(FormHandler $formHandler);
 
     /**
+     * If called, the form was not valid
+     *
+     * @param FormHandler $formHandler
+     * @return mixed
+     */
+    public function setInvalid(FormHandler $formHandler);
+
+    /**
      * Check if the form was valid
      *
      * @param FormHandler $formHandler

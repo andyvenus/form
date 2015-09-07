@@ -715,6 +715,10 @@ class FormHandler
                 $this->restoreDataHandler->setRestorableErrors($this, $this->getValidationErrors());
             }
 
+            if (isset($this->restoreDataHandler)) {
+                $this->restoreDataHandler->setInvalid($this);
+            }
+
             return false;
         }
     }
