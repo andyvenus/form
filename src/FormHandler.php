@@ -766,6 +766,22 @@ class FormHandler
     }
 
     /**
+     * Add a custom error to the form
+     *
+     * @param $param
+     * @param $message
+     * @param bool|false $translate
+     * @param array $translationParams
+     */
+    public function addCustomError($param, $message, $translate = false, $translationParams = array())
+    {
+        $this->errors[] = new FormError($param, $message, $translate, $translationParams);
+
+        // Call isValid to update valid status in restore data handlers
+        $this->isValid();
+    }
+
+    /**
      * Add custom errors to the form. Must be an array of FormError objects
      *
      * @param $errors FormError[]
