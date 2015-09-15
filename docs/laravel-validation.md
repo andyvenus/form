@@ -25,3 +25,28 @@ You can also set validation on a model that will be combined with any form valid
             'example_url_field' => 'url'
         ];
     }
+
+## Adding a custom error message to the form
+
+If you want to set a custom error message on the form, you can do so with the addCustomErrors method on the form handler:
+
+    use AV\Form\FormBlueprint;
+    use AV\Form\FormError;
+    
+    $blueprint = new FormBlueprint();
+        
+    $blueprint->add('website_url', 'text', [
+        'label' => 'A label',
+    ]);
+    
+    $form = Form::build($blueprint);
+    
+    if ($form->isSubmitted()) {
+        if ($form->getData('website_url') != 'http://www.google.com') {
+            $form->addCustomErrors([new FormError('website_url', 'Website URL must be http://www.google.com')]);
+        }
+    }
+    
+    // if ($form->isValid()) ... etc
+
+The first parameter of the FormError class is the field name related to the error and the second parameter is the error you want to display. When you add a custom error, the form is considered to have validation errors and `isValid` will return false.

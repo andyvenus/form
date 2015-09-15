@@ -200,7 +200,7 @@ class FormView implements FormViewInterface
     {
         $matchedFields = array();
         foreach ($this->fields as $fieldName => $field) {
-            if (!isset($field['options']['section']) || $field['options']['section'] == null) {
+            if (!isset($field['options']['section']) || $field['options']['section'] === null || $field['options']['section'] === '') {
                 $matchedFields[$fieldName] = $field;
             }
         }
