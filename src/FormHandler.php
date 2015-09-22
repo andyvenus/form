@@ -652,6 +652,7 @@ class FormHandler
         $this->formView->setValid($this->isValid());
         $this->formView->setErrors($this->getValidationErrors());
         $this->formView->setShouldShowSuccessMessage($this->shouldShowSuccessMessage());
+        $this->formView->setSubmitButtonLabel($this->form->getSubmitButtonLabel());
 
         if (isset($this->restoreDataHandler)) {
             $this->restoreDataHandler->cancelRestore($this);

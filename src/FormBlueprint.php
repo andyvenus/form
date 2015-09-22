@@ -46,6 +46,11 @@ class FormBlueprint implements FormBlueprintInterface
     protected $successMessage;
 
     /**
+     * @var string
+     */
+    protected $submitButtonLabel = 'Submit';
+
+    /**
      * {@inheritdoc}
      */
     public function add($name, $type, $options = array())
@@ -333,6 +338,19 @@ class FormBlueprint implements FormBlueprintInterface
     public function setName($name)
     {
         $this->name = $name;
+    }
+
+    /**
+     * @param string $label
+     */
+    public function setSubmitButtonLabel($label)
+    {
+        $this->submitButtonLabel = $label;
+    }
+
+    public function getSubmitButtonLabel()
+    {
+        return $this->submitButtonLabel;
     }
 
     /**

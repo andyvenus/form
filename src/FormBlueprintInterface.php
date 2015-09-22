@@ -167,4 +167,8 @@ interface FormBlueprintInterface
     public function hasSection($id);
 
     public function getSections();
+
+    public function setSubmitButtonLabel($label);
+
+    public function getSubmitButtonLabel();
 }
