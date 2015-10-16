@@ -19,9 +19,14 @@ use Symfony\Component\Translation\TranslatorInterface;
 class FormView implements FormViewInterface
 {
     /**
-     * @var Array
+     * @var array
      */
     protected $fields = array();
+
+    /**
+     * @var array
+     */
+    protected $flatFields;
 
     /**
      * @var TranslatorInterface
@@ -177,18 +182,72 @@ class FormView implements FormViewInterface
      * Get fields for a certain section
      *
      * @param $section
+     * @param bool $flatten
      * @return array
      */
-    public function getSectionFields($section)
+    public function getSectionFields($section, $flatten = true)
     {
+        if ($flatten === false) {
+            $fields = $this->fields;
+        } else {
+            $fields = $this->getFlattenedFields();
+        }
+
         $matchedFields = array();
-        foreach ($this->fields as $fieldName => $field) {
+        foreach ($fields as $fieldName => $field) {
             if (isset($field['options']['section']) && $field['options']['section'] == $section) {
                 $matchedFields[$fieldName] = $field;
             }
         }
 
         return $matchedFields;
+    }
+
+    /**
+     * Flatten all fields by moving collections into the main array
+     *
+     * @return array
+     */
+    public function getFlattenedFields()
+    {
+        if (!isset($this->flatFields)) {
+            $this->flatFields = [];
+
+            foreach ($this->fields as $field) {
+                if (isset($field['fields']) && is_array($field['fields'])) {
+                    $this->flatFields += $this->flattenCollection($field);
+                } else {
+                    $this->flatFields[$field['name']] = $field;
+                }
+            }
+        }
+
+        return $this->flatFields;
+    }
+
+    /**
+     * Flatten the fields in a collection
+     *
+     * @param $field
+     * @return array
+     */
+    protected function flattenCollection($field)
+    {
+        if (!isset($field['fields']) || !is_array($field['fields'])) {
+            return [];
+        }
+
+        $fields = [];
+
+        foreach ($field['fields'] as $field) {
+            if (isset($field['fields']) && is_array($field['fields'])) {
+                $fields += $this->flattenCollection($field);
+            } else {
+                $fields[$field['name']] = $field;
+            }
+        }
+
+        return $fields;
     }
 
     /**
