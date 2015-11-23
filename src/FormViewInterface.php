@@ -144,6 +144,13 @@ interface FormViewInterface
     public function shouldShowSuccessMessage();
 
     /**
+     * Get the form information in array format that can be returned as JSON
+     *
+     * @return mixed
+     */
+    public function toArray();
+
+    /**
      * Check if a form field is set (magic method)
      *
      * @param $name
