@@ -159,9 +159,36 @@ class FormBlueprint implements FormBlueprintInterface
      */
     public function remove($name)
     {
-        unset($this->fields[$name]);
+        if (strpos($name, '[') !== false) {
+            $names = $this->explodeFieldNameArray($name);
+
+            $first = array_shift($names);
+
+            if (!isset($this->fields[$first])) {
+                return $this;
+            }
+
+            $parent =& $this->recursiveFindParent($this->fields[$first], $names);
+
+            $field = array_pop($names);
+
+            unset($parent['fields'][$field]);
+        } else {
+            unset($this->fields[$name]);
+        }
 
         return $this;
+    }
+
+    private function &recursiveFindParent(&$field, $name)
+    {
+        array_shift($name);
+
+        if (count($name) === 0) {
+            return $field;
+        }
+
+        return $this->recursiveFindParent($field, $name);
     }
 
     /**
