@@ -116,8 +116,8 @@ An array of different choices for the radio group
         'choices' => [
             'checked_value' => 'yes',
             'unchecked_value' => 'no',
-            'default' => 'yes'
-        ]
+        ],
+        'default' => 'yes'
     ]);
     
 Checkboxes work a little differently to other field types because when unchecked they don't send anything back to the server. So this means that `allow_unset` defaults to `true` and cannot be changed.
