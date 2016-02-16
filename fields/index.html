@@ -235,8 +235,8 @@
     'choices' =&gt; [
         'checked_value' =&gt; 'yes',
         'unchecked_value' =&gt; 'no',
-        'default' =&gt; 'yes'
-    ]
+    ],
+    'default' =&gt; 'yes'
 ]);
 </code></pre>
 <p>Checkboxes work a little differently to other field types because when unchecked they don't send anything back to the server. So this means that <code>allow_unset</code> defaults to <code>true</code> and cannot be changed.</p>
