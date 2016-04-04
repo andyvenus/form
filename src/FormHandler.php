@@ -894,4 +894,15 @@ class FormHandler
 
         return $data;
     }
+
+    /**
+     * Get a form data value
+     * 
+     * @param $key
+     * @return mixed
+     */
+    public function __get($key)
+    {
+        return $this->getData($key);
+    }
 }
