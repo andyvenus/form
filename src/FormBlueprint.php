@@ -61,6 +61,11 @@ class FormBlueprint implements FormBlueprintInterface
             'options' => $options
         );
 
+        if(!isset($field['options']['attr']['id'])) {
+            if(!isset($field['options']['attr'])) { $field['options']['attr'] = array(); }
+            $field['options']['attr']['id'] = $name."_generated_id";
+        }
+
         if (strpos($name, '[') !== false && (isset($options['attr']['multiple']) || isset($options['accept_array']))) {
             $field['original_name'] = $field['name'];
             $field['name'] = str_replace('[]', '', $field['name']);
@@ -96,6 +101,7 @@ class FormBlueprint implements FormBlueprintInterface
 
             $this->fields[$name] = $field;
         }
+
 
         return $this;
     }
