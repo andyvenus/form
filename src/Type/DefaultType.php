@@ -32,7 +32,7 @@ class DefaultType implements TypeInterface
 
     public function isValidRequestData($field, $data)
     {
-        if ($data !== null) {
+        if ($data !== null && !is_array($data)) {
             return true;
         }
         else {
