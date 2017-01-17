@@ -219,6 +219,24 @@ class FormBlueprint implements FormBlueprintInterface
     }
 
     /**
+     * Override a field option
+     *
+     * @param $field
+     * @param $option
+     * @param $value
+     * @return void
+     * @throws \Exception
+     */
+    public function setFieldOption($field, $option, $value)
+    {
+        if (!isset($this->fields[$field])) {
+            throw new \Exception("Cannot set field option: Field {$field} not found");
+        }
+
+        $this->fields[$field]['options'][$option] = $value;
+    }
+
+    /**
      * @param $id
      * @param $label
      */

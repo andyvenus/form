@@ -60,6 +60,16 @@ interface FormBlueprintInterface
     public function replace($name, $type, $options = array(), $addIfNotExist = false);
 
     /**
+     * Override a field option
+     *
+     * @param $field
+     * @param $option
+     * @param $value
+     * @return void
+     */
+    public function setFieldOption($field, $option, $value);
+
+    /**
      * Remove a field from the form
      *
      * @param string $name The name of the field to be removed
