@@ -68,7 +68,6 @@ class SelectType extends DefaultType
                 }
             } else {
                 $field['options']['choices_flat'][$choiceId] = $choiceOrGroup;
-                break;
             }
         }
 
