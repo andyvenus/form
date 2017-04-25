@@ -454,10 +454,7 @@ class FormView implements FormViewInterface
         return $this->toArray();
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __get($name)
+    public function get($name)
     {
         if (isset($this->fields[$name])) {
             return $this->fields[$name];
@@ -467,10 +464,7 @@ class FormView implements FormViewInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function __isset($name)
+    public function has($name)
     {
         if (isset($this->fields[$name])) {
             return true;
@@ -478,5 +472,21 @@ class FormView implements FormViewInterface
         else {
             return false;
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __get($name)
+    {
+        return $this->get($name);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __isset($name)
+    {
+        return $this->has($name);
     }
 } 
