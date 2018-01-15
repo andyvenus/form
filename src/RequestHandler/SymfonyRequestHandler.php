@@ -30,6 +30,11 @@ class SymfonyRequestHandler implements RequestHandlerInterface
         }
 
         if ($formHandler->getMethod() == 'POST') {
+            if ($request->getMethod() != 'POST') {
+                // For security, if the request wasn't post, always return an empty array
+                return array();
+            }
+
             $paramBag = 'request';
         }
         else {
@@ -46,4 +51,4 @@ class SymfonyRequestHandler implements RequestHandlerInterface
 
         return $params;
     }
-} 
+}
