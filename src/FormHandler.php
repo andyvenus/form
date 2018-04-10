@@ -196,12 +196,12 @@ class FormHandler
      */
     protected function getDefaultOptions(array $fields)
     {
-        $fields_updated = array();
-        foreach ($fields as $field_name => $field) {
-            $fields_updated[$field_name] = $this->typeHandler->getDefaultOptions($field);
+        $fieldsUpdated = array();
+        foreach ($fields as $fieldName => $field) {
+            $fieldsUpdated[$fieldName] = $this->typeHandler->getDefaultOptions($field);
         }
 
-        return $fields_updated;
+        return $fieldsUpdated;
     }
 
     /**
