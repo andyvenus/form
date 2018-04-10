@@ -7,6 +7,7 @@
 
 namespace AV\Form;
 
+use AV\Form\Entity\EntityInterface;
 use AV\Form\EntityProcessor\EntityProcessorInterface;
 use AV\Form\EntityProcessor\GetterSetterEntityProcessor;
 use AV\Form\Event\FormHandlerConstructEvent;
@@ -244,7 +245,11 @@ class FormHandler
 
         $this->entities[] = array('entity' => $entity, 'fields' => $fields, 'validatable' => $validatable);
 
-        $entityData = $this->entityProcessor->getFromEntity($entity, array_keys($this->fields), $fields);
+        if ($entity instanceof EntityInterface) {
+            $entityData = $entity->getFormData(array_keys($this->fields), $fields);
+        } else {
+            $entityData = $this->entityProcessor->getFromEntity($entity, array_keys($this->fields), $fields);
+        }
 
         $entityData = $this->transformToFormData($entityData);
 
@@ -353,7 +358,11 @@ class FormHandler
         $data = $this->transformFromFormData($this->data);
 
         foreach ($this->entities as $entity) {
-            $this->entityProcessor->saveToEntity($entity['entity'], $data, $entity['fields']);
+            if ($entity['entity'] instanceof EntityInterface) {
+                $entity['entity']->setFormData($data, $entity['fields']);
+            } else {
+                $this->entityProcessor->saveToEntity($entity['entity'], $data, $entity['fields']);
+            }
         }
     }
 
@@ -373,7 +382,12 @@ class FormHandler
         foreach ($this->entities as $entity) {
             $entity['entity'] = clone $entity['entity'];
             $cloned_entities[] = $entity;
-            $this->entityProcessor->saveToEntity($entity['entity'], $data, $entity['fields']);
+
+            if ($entity['entity'] instanceof EntityInterface) {
+                $entity['entity']->setFormData($data, $entity['fields']);
+            } else {
+                $this->entityProcessor->saveToEntity($entity['entity'], $data, $entity['fields']);
+            }
         }
 
         return $cloned_entities;
@@ -897,7 +911,7 @@ class FormHandler
 
     /**
      * Get a form data value
-     * 
+     *
      * @param $key
      * @return mixed
      */
