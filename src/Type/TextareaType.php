@@ -1,13 +1,8 @@
 <?php
-/**
- * User: Andy
- * Date: 15/05/15
- * Time: 22:40
- */
 
 namespace AV\Form\Type;
 
-class TextType extends DefaultType
+class TextareaType extends DefaultType
 {
     public function processRequestData($field, $data)
     {
@@ -27,6 +22,6 @@ class TextType extends DefaultType
             }
         }
 
-        return (isset($field['options']['no_trim']) && $field['options']['no_trim'] == true) ? $data : trim($data);
+        return $data;
     }
 }

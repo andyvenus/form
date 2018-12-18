@@ -22,7 +22,8 @@ class TypeHandler implements TypeInterface
             'select' => new SelectType(),
             'file' => new FileType(),
             'radio' => new RadioType(),
-            'text' => new TextType()
+            'text' => new TextType(),
+            'textarea' => new TextareaType(),
         ), $types);
     }
 
