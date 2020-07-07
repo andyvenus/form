@@ -768,13 +768,21 @@ class FormHandler
         foreach ($fields as $field) {
             if (isset($field['options']['required']) && $field['options']['required'] === true) {
                 if (!isset($data[ $field['name'] ]) || $data[ $field['name'] ] == null) {
-                    if (isset($field['options']['label'])) {
-                        $label = $field['options']['label'];
+                    if (!isset($field['options']['required_error_message'])) {
+                        if (isset($field['options']['label'])) {
+                            $label = $field['options']['label'];
+                        } else {
+                            $label = $field['name'];
+                        }
+
+                        $this->errors[] = new FormError($field['name'],
+                            "Field '{field_label}' must be set",
+                            true,
+                            array('field_label' => $label)
+                        );
+                    } else {
+                        $this->errors[] = new FormError($field['name'], $field['options']['required_error_message']);
                     }
-                    else {
-                        $label = $field['name'];
-                    }
-                    $this->errors[] = new FormError($field['name'], "Field '{field_label}' must be set", true, array('field_label' => $label));
                 }
             }
 
