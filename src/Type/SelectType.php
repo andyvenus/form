@@ -36,6 +36,8 @@ class SelectType extends DefaultType
                     }
                 }
             }
+
+            return true;
         }
         elseif ($data !== null) {
             return true;
