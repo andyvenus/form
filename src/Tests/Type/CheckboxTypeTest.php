@@ -8,8 +8,9 @@
 namespace AV\Form\Tests\Type;
 
 use AV\Form\Type\CheckboxType;
+use PHPUnit\Framework\TestCase;
 
-class CheckboxTypeTest extends \PHPUnit_Framework_TestCase
+class CheckboxTypeTest extends TestCase
 {
     /**
      * @var CheckboxType
@@ -21,7 +22,7 @@ class CheckboxTypeTest extends \PHPUnit_Framework_TestCase
      */
     private $basic_field;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->default_type = new CheckboxType();
         $this->basic_field = array(
@@ -101,4 +102,3 @@ class CheckboxTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('basic_field_original', $checked_view['name']);
     }
 }
- 

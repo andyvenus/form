@@ -8,15 +8,16 @@
 namespace AV\Form\Tests\Type;
 
 use AV\Form\Type\FileType;
+use PHPUnit\Framework\TestCase;
 
-class FileTypeTest extends \PHPUnit_Framework_TestCase
+class FileTypeTest extends TestCase
 {
     /**
      * @var FileType
      */
     private $fileType;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->fileType = new FileType();
     }

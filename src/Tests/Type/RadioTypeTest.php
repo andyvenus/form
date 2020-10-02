@@ -8,8 +8,9 @@
 namespace AV\Form\Tests\Type;
 
 use AV\Form\Type\RadioType;
+use PHPUnit\Framework\TestCase;
 
-class RadioTypeTest extends \PHPUnit_Framework_TestCase
+class RadioTypeTest extends TestCase
 {
     public function testIntegerValue()
     {
@@ -23,4 +24,3 @@ class RadioTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertSame(1, $process['value']);
     }
 }
- 

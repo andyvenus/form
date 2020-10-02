@@ -9,8 +9,9 @@ namespace AV\Form\Tests\Type;
 
 
 use AV\Form\Type\DefaultType;
+use PHPUnit\Framework\TestCase;
 
-class DefaultTypeTest extends \PHPUnit_Framework_TestCase
+class DefaultTypeTest extends TestCase
 {
     /**
      * @var DefaultType
@@ -22,7 +23,7 @@ class DefaultTypeTest extends \PHPUnit_Framework_TestCase
      */
     private $basic_field;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->default_type = new DefaultType();
         $this->basic_field = array(
@@ -99,4 +100,3 @@ class DefaultTypeTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test', $view['value']);
     }
 }
- 

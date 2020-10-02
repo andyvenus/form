@@ -8,14 +8,16 @@
 namespace AV\Form\Tests;
 
 use AV\Form\FormBlueprint;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
-class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
+class FormBlueprintTest extends TestCase {
     /**
      * @var FormBlueprint
      */
     private $form;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->form = new FormBlueprint();
     }
@@ -41,7 +43,7 @@ class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
 
     public function testDuplicateAdd()
     {
-        $this->setExpectedException('\Exception', "Can't add field, field 'name' already exists");
+        $this->expectExceptionMessage("Can't add field, field 'name' already exists");
 
         $this->form->add('name', 'text');
         $this->form->add('name', 'text');
@@ -120,7 +122,7 @@ class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
 
     public function testInvalidReplaceElement()
     {
-        $this->setExpectedException('\Exception');
+        $this->expectException(Exception::class);
 
         $this->form->replace('does-not-exist', 'text');
     }
@@ -144,7 +146,10 @@ class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
                 'name' => 'name',
                 'type' => 'text',
                 'options' => array(
-                    'label' => 'Name'
+                    'label' => 'Name',
+                    'attr' => [
+                        'id' => 'name_generated_id'
+                    ]
                 )
             ),
             'category' => array(
@@ -155,14 +160,20 @@ class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
                         'category_one' => 'Category One',
                         'category_two' => 'Category Two'
                     ),
-                    'label' => 'Category'
+                    'label' => 'Category',
+                    'attr' => [
+                        'id' => 'category_generated_id'
+                    ]
                 )
             ),
             'url' => array(
                 'name' => 'url',
                 'type' => 'textarea',
                 'options' => array(
-                    'label' => 'URL'
+                    'label' => 'URL',
+                    'attr' => [
+                        'id' => 'url_generated_id'
+                    ]
                 )
             )
         );
@@ -242,4 +253,3 @@ class FormBlueprintTest extends \PHPUnit_Framework_TestCase {
         $this->assertFalse($this->form->hasSection('3'));
     }
 }
- 

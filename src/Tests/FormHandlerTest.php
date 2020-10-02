@@ -18,9 +18,11 @@ use AV\Form\Tests\Fixtures\BasicForm;
 use AV\Form\Tests\Fixtures\StandardForm;
 use AV\Form\Tests\Fixtures\StandardFormEntity;
 use AV\Form\Type\TypeHandler;
+use Exception;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 
-class FormHandlerTest extends \PHPUnit_Framework_TestCase
+class FormHandlerTest extends TestCase
 {
     /**
      * @var BasicForm
@@ -62,7 +64,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
      */
     protected $default_request;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->basic_form = new BasicForm();
         $this->standard_form = new StandardForm();
@@ -82,7 +84,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
             'published' => 1
         );
 
-        $this->mock_validator = $this->getMock('AV\Form\ValidatorExtension\ValidatorExtensionInterface');
+        $this->mock_validator = $this->createMock('AV\Form\ValidatorExtension\ValidatorExtensionInterface');
 
         $this->resetRequest();
     }
@@ -101,7 +103,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidMethod()
     {
-        $this->setExpectedException('\Exception');
+        $this->expectException(Exception::class);
 
         $this->basic_form_handler->setMethod('BAD');
     }
@@ -283,9 +285,10 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testBindEntityException()
     {
-        $this->setExpectedException('\Exception');
+        $this->expectException(Exception::class);
 
-        $this->basic_form_handler->handleRequest(array());
+        $_POST = array('name' => 'a');
+        $this->basic_form_handler->handleRequest();
 
         $this->basic_form_handler->bindEntity(new StandardFormEntity());
     }
@@ -310,25 +313,28 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals("Entity Description", $form_handler->getData('description'));
 
-        $form_handler->handleRequest($this->standard_form_request, 'standard');
+        $_POST = $this->standard_form_request;
+        $form_handler->handleRequest();
 
         $this->assertEquals("Example Description", $form_handler->getData('description'));
     }
 
     public function testGetField()
     {
-        $request = $this->standard_form_request;
-
         $form_handler = $this->basic_form_handler;
 
-        $form_handler->handleRequest($request, 'standard');
+        $_POST = $this->standard_form_request;
+        $form_handler->handleRequest();
 
         $expected = array (
             'name' => 'name',
             'type' => 'text',
             'options' => array (
                 'label' => 'Name',
-                'required' => true
+                'required' => true,
+                'attr' => [
+                    'id' => 'name_generated_id'
+                ]
             ),
             'value' => 'Example Name',
             'has_error' => ''
@@ -351,7 +357,10 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
                 'type' => 'text',
                 'options' => array (
                     'label' => 'Name',
-                    'required' => true
+                    'required' => true,
+                    'attr' => [
+                        'id' => 'name_generated_id'
+                    ]
                 ),
                 'value' => 'Example Name',
                 'has_error' => ''
@@ -409,6 +418,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
         $form = new FormHandler($this->basic_form);
 
         $_POST['name'] = '';
+        $_POST['no_label'] = [];
         $_POST['no_label']['example'] = '';
 
         $form->handleRequest();
@@ -494,7 +504,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse($this->basic_form_handler->isValid());
 
-        $this->setExpectedException('\Exception', 'Cannot get validator, no validator assigned');
+        $this->expectExceptionMessage('Cannot get validator, no validator assigned');
         $this->basic_form_handler->getValidator();
     }
 
@@ -626,16 +636,9 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('unset_value', $processed_field['value']);
     }
 
-    public function testCustomErrors()
-    {
-        $custom_error = new FormError('name', 'Custom Error');
-
-        $this->basic_form_handler->addCustomErrors(array($custom_error));
-    }
-
     public function testCustomErrorsException()
     {
-        $this->setExpectedException('\Exception', 'Custom errors must be AV\Form\FormError objects');
+        $this->expectExceptionMessage('Custom errors must be AV\Form\FormError objects');
 
         $this->basic_form_handler->addCustomErrors(array('invalid'));
     }
@@ -653,7 +656,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
         $blueprint->add('name', 'text', array('transform' => 'example'));
         $form = new FormHandler($blueprint);
 
-        $transformer = $this->getMock('AV\Form\Transformer\TransformerManager');
+        $transformer = $this->createMock('AV\Form\Transformer\TransformerManager');
         $transformer->expects($this->any())
             ->method('fromForm')
             ->will($this->returnValue('transformed'));
@@ -684,7 +687,7 @@ class FormHandlerTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $event_dispatcher_mock = $this->getMock('\Symfony\Component\EventDispatcher\EventDispatcher');
+        $event_dispatcher_mock = $this->createMock('\Symfony\Component\EventDispatcher\EventDispatcher');
 
         $event_dispatcher_mock->expects($this->exactly(2))
             ->method('dispatch');

@@ -10,8 +10,10 @@ namespace AV\Form\Tests;
 use AV\Form\FormBlueprint;
 use AV\Form\FormError;
 use AV\Form\FormView;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
-class FormViewTest extends \PHPUnit_Framework_TestCase
+class FormViewTest extends TestCase
 {
     /**
      * @var FormView
@@ -22,9 +24,10 @@ class FormViewTest extends \PHPUnit_Framework_TestCase
 
     private $categoryField;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->formView = new FormView();
+        $this->formView->setFormBlueprint(new FormBlueprint());
 
         $this->nameField = array (
             'name' => 'name',
@@ -74,7 +77,7 @@ class FormViewTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvalidFieldnameException($field_name)
     {
-        $this->setExpectedException('\Exception');
+        $this->expectException(Exception::class);
 
         $this->formView->setFields(array(
             $field_name => array('name' => $field_name)
@@ -147,6 +150,10 @@ class FormViewTest extends \PHPUnit_Framework_TestCase
 
     public function testTranslation()
     {
+        if (!class_exists('\AVCMS\Core\Translation\Translator')) {
+            $this->markTestSkipped('Cannot test without translator');
+        }
+
         $mockTranslator = $this->getMockBuilder('\AVCMS\Core\Translation\Translator')
             ->disableOriginalConstructor()
             ->getMock();
@@ -245,4 +252,3 @@ class FormViewTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->formView->isSubmitted());
     }
 }
- 

@@ -9,8 +9,9 @@ namespace AV\Form\Tests\Type;
 
 use AV\Form\Type\CollectionType;
 use AV\Form\Type\TypeHandler;
+use PHPUnit\Framework\TestCase;
 
-class CollectionTypeTest extends \PHPUnit_Framework_TestCase
+class CollectionTypeTest extends TestCase
 {
     /**
      * @var CollectionType
@@ -22,7 +23,7 @@ class CollectionTypeTest extends \PHPUnit_Framework_TestCase
      */
     private $collection_field;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->default_type = new CollectionType(new TypeHandler());
 
@@ -71,13 +72,15 @@ class CollectionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function providerAllowUnsetRequest()
     {
+        $this->setUp();
+
         $allowed_unset = $this->collection_field;
         $allowed_unset['options']['allow_unset'] = true;
 
         return array(
             array (
                 $this->collection_field,
-                false
+                true
             ),
             array (
                 $allowed_unset,
@@ -88,7 +91,7 @@ class CollectionTypeTest extends \PHPUnit_Framework_TestCase
 
     public function testGetUnsetRequestData()
     {
-        $this->assertEquals(null, $this->default_type->getUnsetRequestData($this->collection_field));
+        $this->assertEquals([], $this->default_type->getUnsetRequestData($this->collection_field));
     }
 
     public function testIsValidRequestData()

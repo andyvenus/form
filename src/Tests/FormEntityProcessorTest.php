@@ -10,8 +10,9 @@ namespace AV\Form\Tests;
 
 use AV\Form\EntityProcessor\GetterSetterEntityProcessor;
 use AV\Form\Tests\Fixtures\StandardFormEntity;
+use PHPUnit\Framework\TestCase;
 
-class FormEntityProcessorTest extends \PHPUnit_Framework_TestCase {
+class FormEntityProcessorTest extends TestCase {
     /**
      * @var GetterSetterEntityProcessor
      */
@@ -25,7 +26,7 @@ class FormEntityProcessorTest extends \PHPUnit_Framework_TestCase {
      */
     private $formData;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->formEntityProcessor = new GetterSetterEntityProcessor();
         $this->standardEntity = new StandardFormEntity();

@@ -8,8 +8,10 @@
 namespace AV\Form\Tests\Type;
 
 use AV\Form\Type\TypeHandler;
+use PHPUnit\Framework\TestCase;
 
-class TypeHandlerTest extends \PHPUnit_Framework_TestCase {
+class TypeHandlerTest extends TestCase
+{
 
     /**
      * @var TypeHandler
@@ -21,11 +23,11 @@ class TypeHandlerTest extends \PHPUnit_Framework_TestCase {
      */
     private $mock_type;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->type_handler = new TypeHandler();
 
-        $this->mock_type = $this->getMock('AV\Form\Type\TypeInterface');
+        $this->mock_type = $this->createMock('AV\Form\Type\TypeInterface');
     }
 
     public function testGetType()
@@ -93,7 +95,7 @@ class TypeHandlerTest extends \PHPUnit_Framework_TestCase {
     private function createMockTypeWithMockMethod($method, $response)
     {
         // Create a stub for the SomeClass class.
-        $stub = $this->getMock('AV\Form\Type\TypeInterface');
+        $stub = $this->createMock('AV\Form\Type\TypeInterface');
 
         // Configure the stub.
         $stub->expects($this->any())
@@ -103,4 +105,3 @@ class TypeHandlerTest extends \PHPUnit_Framework_TestCase {
         return $stub;
     }
 }
- 

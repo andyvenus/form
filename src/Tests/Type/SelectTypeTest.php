@@ -9,8 +9,9 @@ namespace AV\Form\Tests\Type;
 
 use AV\Form\Tests\Fixtures\ChoicesProviderFixture;
 use AV\Form\Type\SelectType;
+use PHPUnit\Framework\TestCase;
 
-class SelectTypeTest extends \PHPUnit_Framework_TestCase
+class SelectTypeTest extends TestCase
 {
     public function testIsValidRequestDataMultiple()
     {
@@ -41,7 +42,8 @@ class SelectTypeTest extends \PHPUnit_Framework_TestCase
             'name' => 'test',
             'options' => [
                 'strict' => true,
-                'choices' => ['valid_choice' => 'Valid Choice']
+                'choices' => ['valid_choice' => 'Valid Choice'],
+                'choices_flat' => ['valid_choice' => 'Valid Choice']
             ]
         ];
 
@@ -81,4 +83,3 @@ class SelectTypeTest extends \PHPUnit_Framework_TestCase
         ];
     }
 }
- 

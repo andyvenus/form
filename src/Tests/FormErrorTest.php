@@ -8,8 +8,9 @@
 namespace AV\Form\Tests;
 
 use AV\Form\FormError;
+use PHPUnit\Framework\TestCase;
 
-class FormErrorTest extends \PHPUnit_Framework_TestCase
+class FormErrorTest extends TestCase
 {
     public function testFormError()
     {
@@ -36,4 +37,3 @@ class FormErrorTest extends \PHPUnit_Framework_TestCase
         $this->assertNotNull($form_error->getTranslationParams());
     }
 }
- 
