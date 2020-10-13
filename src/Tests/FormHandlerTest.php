@@ -119,6 +119,7 @@ class FormHandlerTest extends TestCase
         $request = new Request(array(), array(
             'name' => 'Example Name'
         ));
+        $request->setMethod('POST');
 
         $form_handler = new FormHandler($this->basic_form, new SymfonyRequestHandler());
 
