@@ -97,7 +97,7 @@ class Field
             return false;
         }
 
-        return in_array($value, $this->choices);
+        return in_array($value, $this->choices, true);
     }
 
     public function choiceLabels(array $choiceLabels): self
