@@ -3,6 +3,7 @@
 namespace AV\Form\Tests\DataStructure;
 
 use AV\Form\DataStructure\Field;
+use AV\Form\Exception\InvalidTypeException;
 use PHPUnit\Framework\TestCase;
 
 class FieldTest extends TestCase
@@ -83,6 +84,7 @@ class FieldTest extends TestCase
             ['string', 1.11, true],
             ['string', [], false],
             ['string', new \stdClass(), false],
+            ['string', null, false],
 
 
             ['integer', 'test', false],
@@ -92,6 +94,7 @@ class FieldTest extends TestCase
             ['integer', '1.11', true],
             ['integer', [], false],
             ['integer', new \stdClass(), false],
+            ['integer', null, false],
 
 
             ['float', 'test', false],
@@ -101,6 +104,7 @@ class FieldTest extends TestCase
             ['float', '1.11', true],
             ['float', [], false],
             ['float', new \stdClass(), false],
+            ['float', null, false],
 
 
             ['double', 'test', false],
@@ -110,6 +114,7 @@ class FieldTest extends TestCase
             ['double', '1.11', true],
             ['double', [], false],
             ['double', new \stdClass(), false],
+            ['double', null, false],
 
 
             ['array', 'test', false],
@@ -119,6 +124,7 @@ class FieldTest extends TestCase
             ['array', '1.11', false],
             ['array', [], true],
             ['array', new \stdClass(), false],
+            ['array', null, false],
 
 
             ['boolean', 'test', false],
@@ -127,18 +133,27 @@ class FieldTest extends TestCase
             ['boolean', '1', true],
             ['boolean', '1.11', true],
             ['boolean', [], false],
-            ['boolean', new \stdClass(), false],
+            ['boolean', null, false],
         ];
+    }
+
+    public function testCanCastNullWhenNullable()
+    {
+        $field = new Field('string', 'test');
+        $field->nullable();
+
+        $this->assertTrue($field->canCast(null));
     }
 
     /**
      * @param string $type
      * @param $value
-     * @dataProvider castDataProvider
+     * @dataProvider validCastDataProvider
      */
-    public function testCast(string $type, $value)
+    public function testValidCast(string $type, $value)
     {
         $field = new Field($type, 'test');
+        $field->nullable();
 
         $expectType = $type;
         if ($type === 'float') {
@@ -148,9 +163,11 @@ class FieldTest extends TestCase
         $this->assertSame($expectType, gettype($field->cast($value)));
     }
 
-    public function castDataProvider()
+    public function validCastDataProvider()
     {
         return [
+            ['NULL', null],
+
             ['string', 'test'],
             ['string', 1],
             ['string', 1.11],
@@ -165,12 +182,10 @@ class FieldTest extends TestCase
             ['float', '1'],
             ['float', '1.11'],
 
-
             ['double', 1],
             ['double', 1.11],
             ['double', '1'],
             ['double', '1.11'],
-
 
             ['array', []],
 
@@ -179,6 +194,42 @@ class FieldTest extends TestCase
             ['boolean', '1'],
             ['boolean', '1.11'],
         ];
+    }
+
+    /**
+     * @param string $type
+     * @param $value
+     * @param bool $nullable
+     * @throws InvalidTypeException
+     * @dataProvider castDataProvider
+     */
+    public function testInvalidCast(string $type, $value)
+    {
+        $this->expectException(InvalidTypeException::class);
+
+        $field = new Field($type, 'test');
+
+        $field->cast($value);
+    }
+
+    public function castDataProvider()
+    {
+        return [
+            ['string', []],
+            ['string', null],
+
+            ['integer', 'abc'],
+
+            ['decimal', 'abc'],
+        ];
+    }
+
+    public function testCastNullWhenNullable()
+    {
+        $field = new Field('string', 'test');
+        $field->nullable();
+
+        $this->assertNull($field->cast(null));
     }
 
     public function testChoicesAndGetChoices()

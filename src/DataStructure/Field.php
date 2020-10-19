@@ -2,6 +2,8 @@
 
 namespace AV\Form\DataStructure;
 
+use AV\Form\Exception\InvalidTypeException;
+
 class Field
 {
     private string $id;
@@ -171,8 +173,14 @@ class Field
 
     public function cast($value)
     {
+        $valueType = gettype($value);
+
         if ($this->checkType($value)) {
             return $value;
+        }
+
+        if (!$this->canCast($value)) {
+            throw new InvalidTypeException("Cannot cast value of type {$valueType} to {$this->type}");
         }
 
         if ($this->isNullable() && is_null($value)) {
@@ -193,7 +201,7 @@ class Field
             case 'boolean':
                 return $this->checkType($value) || is_numeric($value);
             default:
-                return false;
+                throw new InvalidTypeException("Encountered issue casting type {$valueType} to {$this->type}");
         }
     }
 
