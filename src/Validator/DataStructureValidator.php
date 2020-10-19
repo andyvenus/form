@@ -4,7 +4,7 @@ namespace AV\Form\Validator;
 
 use AV\Form\DataStructure\DataStructure;
 
-class StructureValidator
+class DataStructureValidator
 {
     private bool $trimData;
 

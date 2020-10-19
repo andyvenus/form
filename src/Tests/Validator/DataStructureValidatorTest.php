@@ -3,21 +3,21 @@
 namespace AV\Form\Tests\Validator;
 
 use AV\Form\DataStructure\DataStructure;
-use AV\Form\Validator\StructureValidator;
+use AV\Form\Validator\DataStructureValidator;
 use AV\Form\Validator\ValidationError;
 use AV\Form\Validator\ValidationResult;
 use AV\Form\Validator\ValidatorInterface;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
-class StructureValidatorTest extends TestCase
+class DataStructureValidatorTest extends TestCase
 {
     public function testCheck()
     {
         $structure = new DataStructure();
         $structure->string('simple');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, ['simple' => 'value']);
 
         $this->assertTrue($result->isValid());
@@ -28,7 +28,7 @@ class StructureValidatorTest extends TestCase
         $structure = new DataStructure();
         $structure->string('simple');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, ['simple' => ' value ']);
 
         $this->assertSame(5, strlen($result->getValue('simple')));
@@ -39,7 +39,7 @@ class StructureValidatorTest extends TestCase
         $structure = new DataStructure();
         $structure->string('simple');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, []);
 
         $this->assertFalse($result->isValid());
@@ -51,7 +51,7 @@ class StructureValidatorTest extends TestCase
         $structure = new DataStructure();
         $structure->string('simple');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, ['simple' => []]);
 
         $this->assertFalse($result->isValid());
@@ -63,7 +63,7 @@ class StructureValidatorTest extends TestCase
         $structure = new DataStructure();
         $structure->string('simple')->default('abc');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, []);
 
         $this->assertTrue($result->isValid());
@@ -90,7 +90,7 @@ class StructureValidatorTest extends TestCase
             ->choices($choices)
             ->nullable($isNullable);
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, ['simple' => $value]);
 
         $this->assertSame($expectPass, $result->isValid());
@@ -116,7 +116,7 @@ class StructureValidatorTest extends TestCase
         $structure = new DataStructure();
         $structure->string('simple');
 
-        $structureValidator = new StructureValidator();
+        $structureValidator = new DataStructureValidator();
 
         $validationError = new ValidationError('Test Error');
 
