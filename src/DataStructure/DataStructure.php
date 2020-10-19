@@ -9,7 +9,15 @@ class DataStructure
 
     public function field(string $type, string $name): Field
     {
-        return $this->fields[$name] = new Field($type, $name);
+        $field = new Field($type, $name);
+        $this->addField($field);
+
+        return $field;
+    }
+
+    public function addField(Field $field): void
+    {
+        $this->fields[$field->getId()] = $field;
     }
 
     public function hasField(string $name): bool
@@ -20,6 +28,14 @@ class DataStructure
     public function getField(string $name): Field
     {
         return $this->fields[$name];
+    }
+
+    /**
+     * @return array|Field[]
+     */
+    public function getFields(): array
+    {
+        return $this->fields;
     }
 
     public function string(string $name): Field
@@ -43,10 +59,10 @@ class DataStructure
     }
 
     /**
-     * @return array|Field[]
+     * @param array $fields
      */
-    public function getFields(): array
+    public function only(array $fields): void
     {
-        return $this->fields;
+        $this->fields = array_intersect_key($this->fields, array_flip($fields));
     }
 }

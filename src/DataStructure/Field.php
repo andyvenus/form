@@ -18,6 +18,8 @@ class Field
 
     private ?array $choiceLabels = null;
 
+    private array $metadata;
+
     public function __construct(string $type, string $id)
     {
         $this->type = $type;
@@ -116,7 +118,19 @@ class Field
         return $this;
     }
 
-    protected function doTypeCheck($value)
+    public function metadata(string $key, $value): self
+    {
+        $this->metadata[$key] = $value;
+
+        return $this;
+    }
+
+    public function getMetadata(string $key)
+    {
+        return $this->metadata[$key] ?? null;
+    }
+
+    protected function doTypeCheck($value): void
     {
         if (is_null($value) && !$this->isNullable()) {
             throw new \TypeError("Field {$this->id} can not be null");
@@ -186,5 +200,10 @@ class Field
     public function checkType($value)
     {
         return gettype($value) === $this->type;
+    }
+
+    public function getType(): string
+    {
+        return $this->type;
     }
 }
