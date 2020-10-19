@@ -252,4 +252,65 @@ class FormBlueprintTest extends TestCase {
         $this->assertTrue($this->form->hasSection('2'));
         $this->assertFalse($this->form->hasSection('3'));
     }
+
+    public function testUpdate()
+    {
+        $blueprint = new FormBlueprint();
+        $blueprint->add('test', 'text', [
+            'label' => 'original',
+            'other' => 'original',
+            'attr' => ['data-test-one' => 't1']
+        ]);
+
+        $blueprint->update('test', 'select', [
+            'label' => 'new',
+            'new_option' => 'new',
+            'attr' => ['data-test-two' => 't2']
+        ]);
+
+        $finalField = $blueprint->get('test');
+
+        $this->assertSame([
+            'name' => 'test',
+            'type' => 'select',
+            'options' => [
+                'label' => 'new',
+                'other' => 'original',
+                'attr' => [
+                'data-test-one' => 't1',
+                        'id' => 'test_generated_id',
+                        'data-test-two' => 't2',
+                ],
+                'new_option' => 'new'
+            ],
+        ], $finalField);
+    }
+
+
+
+    public function testUpdateIfExists()
+    {
+        $blueprint = new FormBlueprint();
+
+        $blueprint->updateIfExists('test', 'select', [
+            'label' => 'new',
+            'new_option' => 'new',
+            'attr' => ['data-test-two' => 't2']
+        ]);
+
+        $this->assertFalse($blueprint->has('test'));
+
+        $blueprint->add('test', 'text', [
+            'label' => 'original',
+            'other' => 'original',
+            'attr' => ['data-test-one' => 't1']
+        ]);
+
+        $blueprint->updateIfExists('test', 'select', [
+            'label' => 'new label',
+        ]);
+
+        $this->assertIsArray($blueprint->get('test'));
+        $this->assertSame('new label', $blueprint->get('test')['options']['label']);
+    }
 }

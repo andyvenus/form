@@ -160,6 +160,26 @@ class FormBlueprint implements FormBlueprintInterface
         return $this;
     }
 
+    public function update(string $name, string $type, $options = [])
+    {
+        $field = $this->fields[$name];
+
+        $this->fields[$name] = [
+            'name' => $name,
+            'type' => $type,
+            'options' => array_replace_recursive($field['options'] ?? [], $options)
+        ];
+    }
+
+    public function updateIfExists(string $name, string $type, $options = [])
+    {
+        if (!isset($this->fields[$name])) {
+            return;
+        }
+
+        $this->update($name, $type, $options);
+    }
+
     /**
      * {@inheritdoc}
      */
