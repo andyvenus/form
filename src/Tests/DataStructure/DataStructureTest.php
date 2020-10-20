@@ -38,4 +38,34 @@ class DataStructureTest extends TestCase
 
         $this->assertTrue($dataStructure->getField('test')->checkType([]));
     }
+
+    public function testOnly()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->array('one');
+        $dataStructure->array('two');
+
+        $this->assertTrue($dataStructure->hasField('one'));
+        $this->assertTrue($dataStructure->hasField('two'));
+
+        $dataStructure->only(['one']);
+
+        $this->assertTrue($dataStructure->hasField('one'));
+        $this->assertFalse($dataStructure->hasField('two'));
+    }
+
+    public function testExclude()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->array('one');
+        $dataStructure->array('two');
+
+        $this->assertTrue($dataStructure->hasField('one'));
+        $this->assertTrue($dataStructure->hasField('two'));
+
+        $dataStructure->exclude(['two']);
+
+        $this->assertTrue($dataStructure->hasField('one'));
+        $this->assertFalse($dataStructure->hasField('two'));
+    }
 }

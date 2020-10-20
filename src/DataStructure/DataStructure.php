@@ -65,4 +65,9 @@ class DataStructure
     {
         $this->fields = array_intersect_key($this->fields, array_flip($fields));
     }
+
+    public function exclude(array $fields): void
+    {
+        $this->fields = array_diff_key($this->fields, array_flip($fields));
+    }
 }
