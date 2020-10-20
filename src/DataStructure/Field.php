@@ -3,6 +3,7 @@
 namespace AV\Form\DataStructure;
 
 use AV\Form\Exception\InvalidTypeException;
+use AV\Form\Validator\ValidationRuleInterface;
 
 class Field
 {
@@ -21,6 +22,8 @@ class Field
     private ?array $choiceLabels = null;
 
     private array $metadata;
+
+    private array $validationRules;
 
     public function __construct(string $type, string $id)
     {
@@ -130,6 +133,21 @@ class Field
     public function getMetadata(string $key)
     {
         return $this->metadata[$key] ?? null;
+    }
+
+    public function validationRule(ValidationRuleInterface $rule): self
+    {
+        $this->validationRules[] = $rule;
+
+        return $this;
+    }
+
+    /**
+     * @return ValidationRuleInterface[]
+     */
+    public function getValidationRules(): array
+    {
+        return $this->validationRules;
     }
 
     protected function doTypeCheck($value): void
