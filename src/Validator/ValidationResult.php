@@ -57,4 +57,22 @@ class ValidationResult
     {
         return $this->data;
     }
+
+    public function combineResult(array $parentNames, ValidationResult $validationResult)
+    {
+        // If the nested result had validation errors, this result must be invalid
+        if (!$validationResult->isValid) {
+            $this->isValid = false;
+        }
+
+        foreach ($validationResult->getErrors() as $error) {
+            $error->setParentNames($parentNames);
+        }
+
+        $this->errors = array_merge($this->errors, $validationResult->getErrors());
+
+        $nestName = $parentNames[array_key_last($parentNames)];
+
+        $this->data[$nestName] = $validationResult->getData();
+    }
 }

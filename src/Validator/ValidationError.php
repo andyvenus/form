@@ -15,6 +15,8 @@ class ValidationError
 
     private ?Field $field;
 
+    private array $parentNames;
+
     public function __construct(string $message, ?Field $field = null)
     {
         $this->message = $message;
@@ -29,5 +31,20 @@ class ValidationError
     public function getField(): ?string
     {
         return $this->field;
+    }
+
+    public function getFieldNameDotFormat()
+    {
+        return implode('.', array_merge($this->parentNames, [$this->field->getId()]));
+    }
+
+    public function getParentNames(): array
+    {
+        return $this->parentNames;
+    }
+
+    public function setParentNames(array $parentNames): void
+    {
+        $this->parentNames = $parentNames;
     }
 }

@@ -4,8 +4,14 @@ namespace AV\Form\DataStructure;
 
 class DataStructure
 {
-    /** @var array|Field[] */
+    /** @var Field[] */
     protected array $fields = [];
+
+    /** @var DataStructure[] */
+    private array $nested = [];
+
+    /** @var string[] */
+    private array $parentNames = [];
 
     public function field(string $type, string $name): Field
     {
@@ -56,6 +62,58 @@ class DataStructure
     public function array(string $name): Field
     {
         return $this->field('array', $name);
+    }
+
+    public function nest(string $name, DataStructure $dataStructure): self
+    {
+        $this->nested[$name] = $dataStructure;
+
+        $dataStructure->setParentNames(array_merge($this->parentNames, [$name]));
+
+        return $this;
+    }
+
+    public function nested(string $name, callable $closure): self
+    {
+        $nestedStructure = new DataStructure();
+
+        $closure($nestedStructure);
+
+        $this->nest($name, $nestedStructure);
+
+        return $this;
+    }
+
+    private function setParentNames(array $parentNames): void
+    {
+        $this->parentNames = $parentNames;
+
+        foreach ($this->nested as $name => $nestedStructure) {
+            $nestedStructure->setParentNames(array_merge($this->parentNames, [$name]));
+        }
+    }
+
+    public function getParentNames(): array
+    {
+        return $this->parentNames;
+    }
+
+    /**
+     * @return DataStructure[]
+     */
+    public function getAllNested(): array
+    {
+        return $this->nested;
+    }
+
+    public function hasNested(string $name): bool
+    {
+        return isset($this->nested[$name]);
+    }
+
+    public function getNested(string $name): DataStructure
+    {
+        return $this->nested[$name];
     }
 
     /**

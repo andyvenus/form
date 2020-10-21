@@ -68,4 +68,15 @@ class DataStructureTest extends TestCase
         $this->assertTrue($dataStructure->hasField('one'));
         $this->assertFalse($dataStructure->hasField('two'));
     }
+
+    public function testNested()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->nested('inner', function(DataStructure $inner) {
+            $inner->string('test_string');
+        });
+
+        $this->assertCount(1, $dataStructure->getAllNested());
+        $this->assertSame('test_string', $dataStructure->getNested('inner')->getField('test_string')->getId());
+    }
 }

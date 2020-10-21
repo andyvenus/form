@@ -146,4 +146,49 @@ class DataStructureValidatorTest extends TestCase
             [false]
         ];
     }
+
+    /**
+     * @param array $data
+     * @param bool $expectValid
+     * @dataProvider validateNestedDataStructureDataProvider
+     */
+    public function testValidateNestedDataStructureIsValid(array $data, bool $expectValid)
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->nested('inner', function(DataStructure $inner) {
+            $inner->string('abc')
+                ->choices(['a', 'b']);
+        });
+
+        $validator = new DataStructureValidator();
+        $result = $validator->check($dataStructure, $data);
+
+        $this->assertSame($expectValid, $result->isValid());
+    }
+
+    public function validateNestedDataStructureDataProvider()
+    {
+        return [
+            'valid choice' => [['inner' => ['abc' => 'a']], true],
+            'invalid choice' => [['inner' => ['abc' => 'c']], false],
+            'no data' => [[], false],
+        ];
+    }
+
+    public function testValidateNestedDataStructureErrorsHaveParentNamesSet()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->nested('inner', function(DataStructure $inner) {
+            $inner->string('abc')
+                ->choices(['a', 'b']);
+        });
+
+        $validator = new DataStructureValidator();
+        $result = $validator->check($dataStructure, []);
+
+        $this->assertFalse($result->isValid());
+
+        $errors = $result->getErrors();
+        $this->assertSame(['inner'], $errors[0]->getParentNames());
+    }
 }

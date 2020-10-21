@@ -75,7 +75,16 @@ class DataStructureValidator
             $finalData[$fieldId] = $value;
         }
 
-        return new ValidationResult(empty($errors), $errors, $finalData);
+        $result = new ValidationResult(empty($errors), $errors, $finalData);
+
+        foreach ($dataStructure->getAllNested() as $nestedName => $nestedDataStructure) {
+            $result->combineResult(
+                $nestedDataStructure->getParentNames(),
+                $this->check($nestedDataStructure, $data[$nestedName] ?? [])
+            );
+        }
+
+        return $result;
     }
 
     private function trimArray(array $data)
