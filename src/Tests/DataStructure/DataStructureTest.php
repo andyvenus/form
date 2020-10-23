@@ -76,7 +76,6 @@ class DataStructureTest extends TestCase
             $inner->string('test_string');
         });
 
-        $this->assertCount(1, $dataStructure->getAllNested());
-        $this->assertSame('test_string', $dataStructure->getNested('inner')->getField('test_string')->getId());
+        $this->assertTrue($dataStructure->getField('inner')->getDataStructure()->hasField('test_string'));
     }
 }

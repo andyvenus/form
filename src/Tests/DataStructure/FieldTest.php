@@ -2,6 +2,7 @@
 
 namespace AV\Form\Tests\DataStructure;
 
+use AV\Form\DataStructure\DataStructure;
 use AV\Form\DataStructure\Field;
 use AV\Form\Exception\InvalidTypeException;
 use PHPUnit\Framework\TestCase;
@@ -29,6 +30,28 @@ class FieldTest extends TestCase
             ['integer', 1],
             ['boolean', true],
         ];
+    }
+
+    public function testNestedDefault()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->string('inner')->default('abc');
+
+        $field = new Field('array', 'test');
+        $field->dataStructure($dataStructure);
+
+        $this->assertSame($field->getDefault(), ['inner' => 'abc']);
+    }
+
+    public function testEmptyNestedDefault()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->string('inner');
+
+        $field = new Field('array', 'test');
+        $field->dataStructure($dataStructure);
+
+        $this->assertSame($field->getDefault(), []);
     }
 
     /**

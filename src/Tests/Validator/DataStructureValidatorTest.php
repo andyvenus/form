@@ -179,8 +179,7 @@ class DataStructureValidatorTest extends TestCase
     {
         $dataStructure = new DataStructure();
         $dataStructure->nested('inner', function(DataStructure $inner) {
-            $inner->string('abc')
-                ->choices(['a', 'b']);
+            $inner->string('abc')->choices(['a', 'b']);
         });
 
         $validator = new DataStructureValidator();

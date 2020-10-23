@@ -25,6 +25,8 @@ class Field
 
     private array $validationRules;
 
+    private DataStructure $dataStructure;
+
     public function __construct(string $type, string $id)
     {
         $this->type = $type;
@@ -69,12 +71,29 @@ class Field
 
     public function hasDefault(): bool
     {
-        return isset($this->default);
+        return isset($this->default) || isset($this->dataStructure);
     }
 
     public function getDefault()
     {
-        return $this->default;
+        if (isset($this->default)) {
+            return $this->default;
+        }
+
+        // Get the defaults for the nested data structure
+        if (isset($this->dataStructure)) {
+            $default = [];
+
+            foreach ($this->dataStructure->getFields() as $field) {
+                if ($field->hasDefault()) {
+                    $default[$field->getId()] = $field->getDefault();
+                }
+            }
+
+            return $default;
+        }
+
+        throw new \Exception('Tried to get the default value for a field that does not have one');
     }
 
     public function choices(array $choices): self
@@ -231,5 +250,26 @@ class Field
     public function getType(): string
     {
         return $this->type;
+    }
+
+    public function hasDataStructure(): bool
+    {
+        return isset($this->dataStructure);
+    }
+
+    public function getDataStructure(): DataStructure
+    {
+        return $this->dataStructure;
+    }
+
+    public function dataStructure(DataStructure $dataStructure): self
+    {
+        if ($this->type !== 'array') {
+            throw new \Exception("Field '{$this->getId()}': Only array fields can have a data structure");
+        }
+
+        $this->dataStructure = $dataStructure;
+
+        return $this;
     }
 }

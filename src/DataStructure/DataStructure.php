@@ -7,9 +7,6 @@ class DataStructure
     /** @var Field[] */
     protected array $fields = [];
 
-    /** @var DataStructure[] */
-    private array $nested = [];
-
     /** @var string[] */
     private array $parentNames = [];
 
@@ -66,9 +63,9 @@ class DataStructure
 
     public function nest(string $name, DataStructure $dataStructure): self
     {
-        $this->nested[$name] = $dataStructure;
-
         $dataStructure->setParentNames(array_merge($this->parentNames, [$name]));
+
+        $this->array($name)->dataStructure($dataStructure);
 
         return $this;
     }
@@ -88,32 +85,16 @@ class DataStructure
     {
         $this->parentNames = $parentNames;
 
-        foreach ($this->nested as $name => $nestedStructure) {
-            $nestedStructure->setParentNames(array_merge($this->parentNames, [$name]));
+        foreach ($this->fields as $name => $field) {
+            if ($field->hasDataStructure()) {
+                $field->getDataStructure()->setParentNames(array_merge($this->parentNames, [$name]));
+            }
         }
     }
 
     public function getParentNames(): array
     {
         return $this->parentNames;
-    }
-
-    /**
-     * @return DataStructure[]
-     */
-    public function getAllNested(): array
-    {
-        return $this->nested;
-    }
-
-    public function hasNested(string $name): bool
-    {
-        return isset($this->nested[$name]);
-    }
-
-    public function getNested(string $name): DataStructure
-    {
-        return $this->nested[$name];
     }
 
     /**

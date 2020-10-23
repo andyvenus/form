@@ -29,6 +29,7 @@ class DataStructureValidator
 
         $errors = [];
         $finalData = [];
+        $nestedDataStructures = [];
 
         foreach ($fields as $fieldId => $field) {
             if (!array_key_exists($fieldId, $data)) {
@@ -73,11 +74,15 @@ class DataStructureValidator
 
             // Record the data, whether it is valid or not
             $finalData[$fieldId] = $value;
+
+            if ($field->hasDataStructure()) {
+                $nestedDataStructures[$field->getId()] = $field->getDataStructure();
+            }
         }
 
         $result = new ValidationResult(empty($errors), $errors, $finalData);
 
-        foreach ($dataStructure->getAllNested() as $nestedName => $nestedDataStructure) {
+        foreach ($nestedDataStructures as $nestedName => $nestedDataStructure) {
             $result->combineResult(
                 $nestedDataStructure->getParentNames(),
                 $this->check($nestedDataStructure, $data[$nestedName] ?? [])
