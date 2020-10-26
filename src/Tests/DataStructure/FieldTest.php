@@ -281,7 +281,7 @@ class FieldTest extends TestCase
     {
         $field = new Field('string', 'test');
         $field->labelledChoices([
-            'Label' => 'value'
+            'value' => 'Label'
         ]);
 
         $this->assertSame(['value' => 'Label'], $field->getChoiceLabels());

@@ -136,8 +136,8 @@ class Field
 
     public function labelledChoices(array $choices): self
     {
-        $this->choiceLabels(array_flip($choices));
-        $this->choices(array_values($choices));
+        $this->choiceLabels($choices);
+        $this->choices(array_keys($choices));
 
         return $this;
     }
