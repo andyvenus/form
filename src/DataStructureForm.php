@@ -9,12 +9,24 @@ class DataStructureForm extends FormBlueprint
 {
     public function __construct(DataStructure $dataStructure)
     {
+        $this->addFieldsFromDataStructure($dataStructure);
+    }
+
+    protected function addFieldsFromDataStructure(DataStructure $dataStructure)
+    {
         foreach ($dataStructure->getFields() as $field) {
             $type = $this->getInputType($field);
 
-            $this->add($field->getId(), $type, [
-                'label' => $field->getLabel()
-            ]);
+            if ($field->hasDataStructure()) {
+                $this->addFieldsFromDataStructure($field->getDataStructure());
+                continue;
+            }
+
+            $this->add(
+                $this->getInputName($field, $dataStructure->getParentNames()),
+                $type,
+                $this->getInputOptions($field)
+            );
         }
     }
 
@@ -33,5 +45,40 @@ class DataStructureForm extends FormBlueprint
         }
 
         return 'text';
+    }
+
+    protected function getInputName(Field $field, array $parentNames)
+    {
+        if (empty($parentNames)) {
+            $fullName = $field->getId();
+        } else {
+            $fullName = array_shift($parentNames);
+
+            foreach ($parentNames as $parentName) {
+                $fullName .= "[{$parentName}]";
+            }
+
+            $fullName .= "[{$field->getId()}]";
+        }
+
+        if ($field->getType() === 'array' && !$field->hasDataStructure()) {
+            return $fullName.'[]';
+        }
+
+        return $fullName;
+    }
+
+    protected function getInputOptions(Field $field)
+    {
+        $options = [
+            'label' => $field->getLabel()
+        ];
+
+        // Array fields with choices = multiple-select
+        if ($field->hasType('array') && $field->hasChoices()) {
+            $options['attr']['multiple'] = true;
+        }
+
+        return $options;
     }
 }

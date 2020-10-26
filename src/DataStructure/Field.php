@@ -252,6 +252,11 @@ class Field
         return $this->type;
     }
 
+    public function hasType(string $type): bool
+    {
+        return $this->type === $type;
+    }
+
     public function hasDataStructure(): bool
     {
         return isset($this->dataStructure);
