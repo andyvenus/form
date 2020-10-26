@@ -65,6 +65,42 @@ class DataStructureFormTest extends TestCase
         $this->assertSame('text', $formField['fields']['abc']['type']);
     }
 
+    /**
+     * @param array $choices
+     * @param array $choiceLabels
+     * @param array $expectFormChoices
+     * @dataProvider choicesDataProvider
+     */
+    public function testChoices(array $choices, array $choiceLabels, array $expectFormChoices)
+    {
+        $structure = new DataStructure();
+        $structure->array('test')
+            ->choices($choices)
+            ->choiceLabels($choiceLabels);
+
+        $formBlueprint = new DataStructureForm($structure);
+
+        $formField = $formBlueprint->get('test');
+
+        $this->assertSame($expectFormChoices, $formField['options']['choices']);
+    }
+
+    public function choicesDataProvider()
+    {
+        return [
+            'no labels' => [
+                ['abc'],
+                [],
+                ['abc' => 'abc']
+            ],
+            'with labels' => [
+                ['abc'],
+                ['abc' => '123'],
+                ['abc' => '123']
+            ],
+        ];
+    }
+
     public function testArrayFieldWithChoicesHasMultipleOptionSet()
     {
         $structure = new DataStructure();

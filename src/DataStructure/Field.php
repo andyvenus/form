@@ -142,6 +142,16 @@ class Field
         return $this;
     }
 
+    public function getLabelledChoices()
+    {
+        $labelledChoices = [];
+        foreach ($this->choices as $choice) {
+            $labelledChoices[$choice] = $this->choiceLabels[$choice] ?? $choice;
+        }
+
+        return $labelledChoices;
+    }
+
     public function metadata(string $key, $value): self
     {
         $this->metadata[$key] = $value;

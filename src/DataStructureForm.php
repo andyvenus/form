@@ -79,6 +79,10 @@ class DataStructureForm extends FormBlueprint
             $options['attr']['multiple'] = true;
         }
 
+        if ($field->hasChoices()) {
+            $options['choices'] = $field->getLabelledChoices();
+        }
+
         return $options;
     }
 }
