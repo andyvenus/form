@@ -27,11 +27,13 @@ class DataStructureValidatorTest extends TestCase
     {
         $structure = new DataStructure();
         $structure->string('simple');
+        $structure->array('array');
 
         $structureValidator = new DataStructureValidator();
-        $result = $structureValidator->check($structure, ['simple' => ' value ']);
+        $result = $structureValidator->check($structure, ['simple' => ' value ', 'array' => [' value ']]);
 
         $this->assertSame(5, strlen($result->getValue('simple')));
+        $this->assertSame(5, strlen($result->getValue('array')[0]));
     }
 
     public function testCheckFailsWithMissingValue()

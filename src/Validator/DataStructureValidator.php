@@ -99,6 +99,9 @@ class DataStructureValidator
                 if (is_string($value)) {
                     $data[$key] = trim($value);
                 }
+                if (is_array($value)) {
+                    $data[$key] = $this->trimArray($value);
+                }
             }
         }
 
