@@ -32,8 +32,21 @@ class DataStructureValidatorTest extends TestCase
         $structureValidator = new DataStructureValidator();
         $result = $structureValidator->check($structure, ['simple' => ' value ', 'array' => [' value ']]);
 
-        $this->assertSame(5, strlen($result->getValue('simple')));
-        $this->assertSame(5, strlen($result->getValue('array')[0]));
+        $this->assertSame(5, strlen($result->getValidValue('simple')));
+        $this->assertSame(5, strlen($result->getValidValue('array')[0]));
+    }
+
+    public function testCheckSplitValidAndInvalidData()
+    {
+        $structure = new DataStructure();
+        $structure->string('one')->choices(['a']);
+        $structure->string('two')->choices(['a']);
+
+        $structureValidator = new DataStructureValidator();
+        $result = $structureValidator->check($structure, ['one' => 'a', 'two' => 'b']);
+
+        $this->assertSame(['one' => 'a'], $result->getValidData());
+        $this->assertSame(['two' => 'b'], $result->getInvalidData());
     }
 
     public function testCheckFailsWithMissingValue()
@@ -69,7 +82,7 @@ class DataStructureValidatorTest extends TestCase
         $result = $structureValidator->check($structure, []);
 
         $this->assertTrue($result->isValid());
-        $this->assertStringContainsString('abc', $result->getValue('simple'));
+        $this->assertStringContainsString('abc', $result->getValidValue('simple'));
     }
 
     /**

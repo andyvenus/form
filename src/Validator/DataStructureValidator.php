@@ -28,10 +28,13 @@ class DataStructureValidator
         $fields = $dataStructure->getFields();
 
         $errors = [];
-        $finalData = [];
+        $validData = [];
+        $invalidData = [];
         $nestedDataStructures = [];
 
         foreach ($fields as $fieldId => $field) {
+            $fieldHasError = false;
+
             if (!array_key_exists($fieldId, $data)) {
                 // No value set
                 if (!$field->hasDefault()) {
@@ -50,7 +53,7 @@ class DataStructureValidator
             // Check if submitted value cannot be cast to the right type
             if (!$field->canCast($value)) {
                 $errors[] = new ValidationError('The value submitted for %label% was in an invalid format', $field);
-                $finalData[$fieldId] = $value;
+                $invalidData[$fieldId] = $value;
                 continue;
             }
 
@@ -59,7 +62,7 @@ class DataStructureValidator
             // Validate choice, unless field is nullable and value is null
             if ($field->hasChoices() && !$field->isChoice($value) && !($field->isNullable() && is_null($value))) {
                 $errors[] = new ValidationError('The value submitted for %label% is not an available choice', $field);
-                $finalData[$fieldId] = $value;
+                $invalidData[$fieldId] = $value;
                 continue;
             }
 
@@ -68,19 +71,23 @@ class DataStructureValidator
                 $fieldResult = $validator->validateField($field, $value);
 
                 if ($fieldResult->isInvalid()) {
+                    $fieldHasError = true;
                     $errors = array_merge($errors, $fieldResult->getErrors());
                 }
             }
 
-            // Record the data, whether it is valid or not
-            $finalData[$fieldId] = $value;
+            if ($fieldHasError) {
+                $invalidData[$fieldId] = $value;
+            } else {
+                $validData[$fieldId] = $value;
+            }
 
             if ($field->hasDataStructure()) {
                 $nestedDataStructures[$field->getName()] = $field->getDataStructure();
             }
         }
 
-        $result = new ValidationResult(empty($errors), $errors, $finalData);
+        $result = new ValidationResult(empty($errors), $errors, $validData, $invalidData);
 
         foreach ($nestedDataStructures as $nestedName => $nestedDataStructure) {
             $result->combineResult(

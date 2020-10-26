@@ -11,13 +11,16 @@ class ValidationResult
     /** @var array|ValidationError[] */
     private array $errors;
 
-    private array $data;
+    private array $validData;
 
-    public function __construct(bool $isValid, array $errors = [], array $data = [])
+    private array $invalidData;
+
+    public function __construct(bool $isValid, array $errors = [], array $validData = [], array $invalidData = [])
     {
         $this->isValid = $isValid;
         $this->errors = $errors;
-        $this->data = $data;
+        $this->validData = $validData;
+        $this->invalidData = $invalidData;
 
         if (!$isValid && empty($errors)) {
             throw new InvalidArgumentException('An invalid validation result was created without any errors');
@@ -45,17 +48,24 @@ class ValidationResult
     /**
      * @return mixed
      */
-    public function getValue($key)
+    public function getValidValue($key)
     {
-        return $this->data[$key];
+        return $this->validData[$key];
     }
 
-    /**
-     * @return array
-     */
     public function getData(): array
     {
-        return $this->data;
+        return array_merge($this->validData, $this->invalidData);
+    }
+
+    public function getValidData(): array
+    {
+        return $this->validData;
+    }
+
+    public function getInvalidData(): array
+    {
+        return $this->invalidData;
     }
 
     public function combineResult(array $parentNames, ValidationResult $validationResult)
@@ -73,6 +83,7 @@ class ValidationResult
 
         $nestName = $parentNames[array_key_last($parentNames)];
 
-        $this->data[$nestName] = $validationResult->getData();
+        $this->validData[$nestName] = $validationResult->getValidData();
+        $this->invalidData[$nestName] = $validationResult->getInvalidData();
     }
 }
