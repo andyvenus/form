@@ -11,6 +11,38 @@ class FieldTest extends TestCase
 {
     /**
      * @param string $type
+     * @dataProvider validTypesDataProvider
+     */
+    public function testInstantiateWithValidType(string $type)
+    {
+        new Field($type, 'test');
+
+        // No exception means all is good
+        $this->assertTrue(true);
+    }
+
+    public function validTypesDataProvider()
+    {
+        return [
+            ['array'],
+            ['integer'],
+            ['float'],
+            ['double'],
+            ['string'],
+            ['boolean'],
+            ['null'],
+        ];
+    }
+
+    public function testInstantiateWithInvalidType()
+    {
+        $this->expectException(InvalidTypeException::class);
+
+        new Field('not-a-real-type', 'test');
+    }
+
+    /**
+     * @param string $type
      * @param $value
      * @dataProvider defaultDataProvider
      */
@@ -183,13 +215,13 @@ class FieldTest extends TestCase
             $expectType = 'double';
         }
 
-        $this->assertSame($expectType, gettype($field->cast($value)));
+        $this->assertSame($expectType, strtolower(gettype($field->cast($value))));
     }
 
     public function validCastDataProvider()
     {
         return [
-            ['NULL', null],
+            ['null', null],
 
             ['string', 'test'],
             ['string', 1],

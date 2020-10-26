@@ -7,6 +7,21 @@ use AV\Form\Validator\ValidationRuleInterface;
 
 class Field
 {
+    private const TYPES = [
+        'array',
+        'integer',
+        'float',
+        'double',
+        'string',
+        'boolean',
+        'null'
+    ];
+
+    private const TYPE_ALIASES = [
+        'bool' => 'boolean',
+        'int' => 'integer',
+    ];
+
     private string $name;
 
     private string $type;
@@ -29,8 +44,21 @@ class Field
 
     public function __construct(string $type, string $name)
     {
-        $this->type = $type;
+        $this->setType($type);
         $this->name = $name;
+    }
+
+    private function setType(string $type): void
+    {
+        if (isset(self::TYPE_ALIASES[$type])) {
+            $type = self::TYPE_ALIASES[$type];
+        }
+
+        if (!in_array($type, self::TYPES)) {
+            throw new InvalidTypeException("Invalid type '{$type}' specified for field");
+        }
+
+        $this->type = $type;
     }
 
     public function getName(): string
