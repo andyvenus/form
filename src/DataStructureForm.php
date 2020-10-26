@@ -50,7 +50,7 @@ class DataStructureForm extends FormBlueprint
     protected function getInputName(Field $field, array $parentNames)
     {
         if (empty($parentNames)) {
-            $fullName = $field->getId();
+            $fullName = $field->getName();
         } else {
             $fullName = array_shift($parentNames);
 
@@ -58,7 +58,7 @@ class DataStructureForm extends FormBlueprint
                 $fullName .= "[{$parentName}]";
             }
 
-            $fullName .= "[{$field->getId()}]";
+            $fullName .= "[{$field->getName()}]";
         }
 
         if ($field->getType() === 'array' && !$field->hasDataStructure()) {

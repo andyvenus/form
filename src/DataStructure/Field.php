@@ -7,7 +7,7 @@ use AV\Form\Validator\ValidationRuleInterface;
 
 class Field
 {
-    private string $id;
+    private string $name;
 
     private string $type;
 
@@ -27,15 +27,15 @@ class Field
 
     private DataStructure $dataStructure;
 
-    public function __construct(string $type, string $id)
+    public function __construct(string $type, string $name)
     {
         $this->type = $type;
-        $this->id = $id;
+        $this->name = $name;
     }
 
-    public function getId(): string
+    public function getName(): string
     {
-        return $this->id;
+        return $this->name;
     }
 
     public function nullable($nullable = true)
@@ -86,7 +86,7 @@ class Field
 
             foreach ($this->dataStructure->getFields() as $field) {
                 if ($field->hasDefault()) {
-                    $default[$field->getId()] = $field->getDefault();
+                    $default[$field->getName()] = $field->getDefault();
                 }
             }
 
@@ -182,13 +182,13 @@ class Field
     protected function doTypeCheck($value): void
     {
         if (is_null($value) && !$this->isNullable()) {
-            throw new \TypeError("Field {$this->id} can not be null");
+            throw new \TypeError("Field {$this->name} can not be null");
         }
 
         if (!$this->checkType($value)) {
             $type = gettype($value);
 
-            throw new \TypeError("Field {$this->id} expected a '{$this->type}' default value, got '{$type}'");
+            throw new \TypeError("Field {$this->name} expected a '{$this->type}' default value, got '{$type}'");
         }
     }
 
@@ -280,7 +280,7 @@ class Field
     public function dataStructure(DataStructure $dataStructure): self
     {
         if ($this->type !== 'array') {
-            throw new \Exception("Field '{$this->getId()}': Only array fields can have a data structure");
+            throw new \Exception("Field '{$this->getName()}': Only array fields can have a data structure");
         }
 
         $this->dataStructure = $dataStructure;

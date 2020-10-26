@@ -35,7 +35,7 @@ class ValidationError
 
     public function getFieldNameDotFormat()
     {
-        return implode('.', array_merge($this->parentNames, [$this->field->getId()]));
+        return implode('.', array_merge($this->parentNames, [$this->field->getName()]));
     }
 
     public function getParentNames(): array

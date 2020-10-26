@@ -76,7 +76,7 @@ class DataStructureValidator
             $finalData[$fieldId] = $value;
 
             if ($field->hasDataStructure()) {
-                $nestedDataStructures[$field->getId()] = $field->getDataStructure();
+                $nestedDataStructures[$field->getName()] = $field->getDataStructure();
             }
         }
 

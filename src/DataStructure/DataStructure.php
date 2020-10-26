@@ -20,7 +20,7 @@ class DataStructure
 
     public function addField(Field $field): void
     {
-        $this->fields[$field->getId()] = $field;
+        $this->fields[$field->getName()] = $field;
     }
 
     public function hasField(string $name): bool

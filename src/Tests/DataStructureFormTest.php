@@ -21,7 +21,7 @@ class DataStructureFormTest extends TestCase
 
         $formBlueprint = new DataStructureForm($structure);
 
-        $formField = $formBlueprint->get($field->getId());
+        $formField = $formBlueprint->get($field->getName());
         $this->assertSame($expectedFormFieldType, $formField['type']);
     }
 
@@ -58,7 +58,7 @@ class DataStructureFormTest extends TestCase
 
         $formBlueprint = new DataStructureForm($structure);
 
-        $formField = $formBlueprint->get($structure->getField('test')->getId());
+        $formField = $formBlueprint->get($structure->getField('test')->getName());
         $this->assertSame('collection', $formField['type']);
 
         $this->assertTrue(isset($formField['fields']['abc']));
@@ -109,7 +109,7 @@ class DataStructureFormTest extends TestCase
 
         $formBlueprint = new DataStructureForm($structure);
 
-        $formField = $formBlueprint->get($structure->getField('test')->getId());
+        $formField = $formBlueprint->get($structure->getField('test')->getName());
         $this->assertSame('select', $formField['type']);
         $this->assertTrue($formField['options']['attr']['multiple']);
     }
