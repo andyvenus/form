@@ -160,9 +160,12 @@ class FormBlueprint implements FormBlueprintInterface
         return $this;
     }
 
-    public function update(string $name, string $type, $options = [])
+    public function update(string $name, $options = [])
     {
         $field = $this->fields[$name];
+
+        $type = $options['type'] ?? $field['type'];
+        unset($options['type']);
 
         $this->fields[$name] = [
             'name' => $name,
@@ -171,13 +174,13 @@ class FormBlueprint implements FormBlueprintInterface
         ];
     }
 
-    public function updateIfExists(string $name, string $type, $options = [])
+    public function updateIfExists(string $name, $options = [])
     {
         if (!isset($this->fields[$name])) {
             return;
         }
 
-        $this->update($name, $type, $options);
+        $this->update($name, $options);
     }
 
     /**

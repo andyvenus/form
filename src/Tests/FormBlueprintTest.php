@@ -262,7 +262,8 @@ class FormBlueprintTest extends TestCase {
             'attr' => ['data-test-one' => 't1']
         ]);
 
-        $blueprint->update('test', 'select', [
+        $blueprint->update('test', [
+            'type' => 'select',
             'label' => 'new',
             'new_option' => 'new',
             'attr' => ['data-test-two' => 't2']
@@ -292,7 +293,8 @@ class FormBlueprintTest extends TestCase {
     {
         $blueprint = new FormBlueprint();
 
-        $blueprint->updateIfExists('test', 'select', [
+        $blueprint->updateIfExists('test', [
+            'type' => 'select',
             'label' => 'new',
             'new_option' => 'new',
             'attr' => ['data-test-two' => 't2']
@@ -306,7 +308,7 @@ class FormBlueprintTest extends TestCase {
             'attr' => ['data-test-one' => 't1']
         ]);
 
-        $blueprint->updateIfExists('test', 'select', [
+        $blueprint->updateIfExists('test', [
             'label' => 'new label',
         ]);
 
