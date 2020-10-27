@@ -4,6 +4,7 @@ namespace AV\Form\DataStructure;
 
 use AV\Form\Exception\InvalidTypeException;
 use AV\Form\Validator\ValidationRuleInterface;
+use Closure;
 
 class Field
 {
@@ -41,6 +42,8 @@ class Field
     private array $validationRules;
 
     private DataStructure $dataStructure;
+
+    private Closure $transformsClosure;
 
     public function __construct(string $type, string $name)
     {
@@ -282,7 +285,7 @@ class Field
 
     public function checkType($value)
     {
-        return gettype($value) === $this->type;
+        return (gettype($value) === $this->type) || ($this->isNullable() && is_null($value));
     }
 
     public function getType(): string
@@ -314,5 +317,32 @@ class Field
         $this->dataStructure = $dataStructure;
 
         return $this;
+    }
+
+    public function transform(Closure $func): self
+    {
+        $this->transformsClosure = $func;
+
+        return $this;
+    }
+
+    /**
+     * @param mixed $data
+     * @return mixed
+     */
+    public function doTransform($data)
+    {
+        if (!isset($this->transformsClosure)) {
+            return $data;
+        }
+
+        $result = ($this->transformsClosure)($data);
+
+        if (!$this->checkType($result)) {
+            $gotType = gettype($result);
+            throw new InvalidTypeException("Invalid type returned when transforming field '{$this->getName()}'. Got {$gotType} but wanted {$this->type}");
+        }
+
+        return $result;
     }
 }

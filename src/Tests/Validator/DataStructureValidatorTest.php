@@ -205,4 +205,18 @@ class DataStructureValidatorTest extends TestCase
         $errors = $result->getErrors();
         $this->assertSame(['inner'], $errors[0]->getParentNames());
     }
+
+    public function testDataIsTransformed()
+    {
+        $dataStructure = new DataStructure();
+        $dataStructure->string('abc')
+            ->transform(fn($data) => 'replaced');
+
+        $validator = new DataStructureValidator();
+        $result = $validator->check($dataStructure, ['abc' => 'original']);
+
+        $this->assertTrue($result->isValid());
+
+        $this->assertSame('replaced', $result->getValidValue('abc'));
+    }
 }

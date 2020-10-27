@@ -79,6 +79,9 @@ class DataStructureValidator
             if ($fieldHasError) {
                 $invalidData[$fieldId] = $value;
             } else {
+                // Transform the data
+                $value = $field->doTransform($value);
+
                 $validData[$fieldId] = $value;
             }
 

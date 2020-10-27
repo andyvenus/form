@@ -319,4 +319,13 @@ class FieldTest extends TestCase
         $this->assertSame(['value' => 'Label'], $field->getChoiceLabels());
         $this->assertSame(['value'], $field->getChoices());
     }
+
+    public function testTransform()
+    {
+        $field = new Field('string', 'test');
+
+        $field->transform(fn($var) => str_replace('te', 'be', $var));
+
+        $this->assertSame('best', $field->doTransform('test'));
+    }
 }
