@@ -183,6 +183,13 @@ class FormBlueprint implements FormBlueprintInterface
         $this->update($name, $options);
     }
 
+    public function updateMany(array $names, $options = []): void
+    {
+        foreach ($names as $name) {
+            $this->updateIfExists($name, $options);
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
