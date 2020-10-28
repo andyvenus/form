@@ -199,6 +199,8 @@ class Field
     {
         $this->validationRules[] = $rule;
 
+        $rule->setField($this);
+
         return $this;
     }
 
