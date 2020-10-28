@@ -41,6 +41,9 @@ class DataStructureFormTest extends TestCase
         $field->metadata('array', 'hidden');
         $data['array field'] = [$field, 'collection'];
 
+        $field = new Field('boolean', 'test');
+        $data['boolean field'] = [$field, 'checkbox'];
+
         $field = new Field('integer', 'test');
         $field->metadata('input_type', 'hidden');
         $data['manually specified field type'] = [$field, 'hidden'];

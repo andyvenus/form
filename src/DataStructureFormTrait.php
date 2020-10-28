@@ -59,6 +59,10 @@ trait DataStructureFormTrait
             return 'number';
         }
 
+        if ($field->getType() === 'boolean') {
+            return 'checkbox';
+        }
+
         return 'text';
     }
 
