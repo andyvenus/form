@@ -10,5 +10,5 @@ interface ValidationRuleInterface
 
     public function supportsValidator(ValidatorInterface $validator): bool;
 
-    public function check(ValidatorInterface $validator): ValidationRuleResult;
+    public function check(ValidatorInterface $validator, $value): ValidationRuleResult;
 }
