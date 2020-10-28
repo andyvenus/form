@@ -8,5 +8,5 @@ use AV\Form\DataStructure\Field;
 
 interface ValidatorInterface
 {
-    public function validateField(Field $field, $value): ValidationResult;
+    public function validateField(Field $field, $value): FieldValidationResult;
 }

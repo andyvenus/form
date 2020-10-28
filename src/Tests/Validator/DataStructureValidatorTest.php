@@ -4,6 +4,7 @@ namespace AV\Form\Tests\Validator;
 
 use AV\Form\DataStructure\DataStructure;
 use AV\Form\Validator\DataStructureValidator;
+use AV\Form\Validator\FieldValidationResult;
 use AV\Form\Validator\ValidationError;
 use AV\Form\Validator\ValidationResult;
 use AV\Form\Validator\ValidatorInterface;
@@ -133,14 +134,15 @@ class DataStructureValidatorTest extends TestCase
 
         $structureValidator = new DataStructureValidator();
 
-        $validationError = new ValidationError('Test Error');
+        $validationErrors = [];
+        if (!$expectedValidationResult) {
+            $validationErrors[] = new ValidationError('Test Error');
+        }
 
         $validator = Mockery::mock(ValidatorInterface::class)
             ->expects('validateField')
             ->once()
-            ->andReturn(new ValidationResult($expectedValidationResult, [
-                $validationError
-            ]))
+            ->andReturn(new FieldValidationResult($validationErrors))
             ->getMock();
 
         $structureValidator->addValidator($validator);
@@ -150,7 +152,7 @@ class DataStructureValidatorTest extends TestCase
         $this->assertSame($expectedValidationResult, $result->isValid());
 
         if (!$expectedValidationResult) {
-            $this->assertContains($validationError, $result->getErrors());
+            $this->assertContains($validationErrors[0], $result->getErrors());
         }
     }
 
