@@ -3,6 +3,7 @@
 namespace AV\Form\DataStructure;
 
 use AV\Form\Exception\InvalidTypeException;
+use AV\Form\Validator\ClosureValidationRule;
 use AV\Form\Validator\ValidationRuleInterface;
 use Closure;
 
@@ -39,7 +40,7 @@ class Field
 
     private array $metadata;
 
-    private array $validationRules;
+    private array $validationRules = [];
 
     private DataStructure $dataStructure;
 
@@ -202,6 +203,11 @@ class Field
         $rule->setField($this);
 
         return $this;
+    }
+
+    public function validateWith(Closure $closure)
+    {
+        $this->validationRule(new ClosureValidationRule($closure));
     }
 
     /**

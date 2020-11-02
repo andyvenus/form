@@ -7,7 +7,7 @@ class FieldValidationResult
     /** @var ValidationError[] */
     private array $errors;
 
-    public function __construct(array $errors)
+    public function __construct(array $errors = [])
     {
         $this->errors = $errors;
     }
@@ -30,5 +30,15 @@ class FieldValidationResult
     public function addErrors(array $errors): void
     {
         $this->errors += $errors;
+    }
+
+    public function addError(ValidationError $validationError)
+    {
+        $this->errors[] = $validationError;
+    }
+
+    public function addErrorString(string $error)
+    {
+        $this->errors[] = new ValidationError($error);
     }
 }

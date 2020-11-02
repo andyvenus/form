@@ -33,6 +33,11 @@ class ValidationError
         return $this->field;
     }
 
+    public function setField(Field $field): void
+    {
+        $this->field = $field;
+    }
+
     public function getFieldNameDotFormat()
     {
         return implode('.', array_merge($this->parentNames, [$this->field->getName()]));

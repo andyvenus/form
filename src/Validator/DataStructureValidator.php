@@ -14,6 +14,8 @@ class DataStructureValidator
     public function __construct(bool $trimData = true)
     {
         $this->trimData = $trimData;
+
+        $this->addValidator(new ClosureValidator());
     }
 
     public function addValidator(ValidatorInterface $validator)
