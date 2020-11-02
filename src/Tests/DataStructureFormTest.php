@@ -116,4 +116,16 @@ class DataStructureFormTest extends TestCase
         $this->assertSame('select', $formField['type']);
         $this->assertTrue($formField['options']['attr']['multiple']);
     }
+
+    public function testInputOptionsDerivedFromMetadata()
+    {
+        $structure = new DataStructure();
+        $structure->string('test')
+            ->metadata('input_options', ['abc' => 123]);
+
+        $formBlueprint = new DataStructureForm($structure);
+
+        $this->assertArrayHasKey('abc', $formBlueprint->get('test')['options']);
+        $this->assertSame(123, $formBlueprint->get('test')['options']['abc']);
+    }
 }

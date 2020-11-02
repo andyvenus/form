@@ -101,7 +101,12 @@ trait DataStructureFormTrait
         if ($field->hasChoices()) {
             $options['choices'] = $field->getLabelledChoices();
         }
+        
+        $fieldOptions = [];
+        if ($field->hasMetadata('input_options')) {
+            $fieldOptions = $field->getMetadata('input_options');
+        }
 
-        return array_merge_recursive($options, $mergeWith);
+        return array_merge_recursive($options, $mergeWith, $fieldOptions);
     }
 }

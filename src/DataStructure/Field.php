@@ -191,6 +191,11 @@ class Field
         return $this;
     }
 
+    public function hasMetadata(string $key): bool
+    {
+        return isset($this->metadata[$key]);
+    }
+
     public function getMetadata(string $key)
     {
         return $this->metadata[$key] ?? null;
