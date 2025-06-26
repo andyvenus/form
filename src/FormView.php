@@ -8,7 +8,8 @@
 namespace AV\Form;
 
 use AV\Form\Exception\InvalidArgumentException;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Component\Translation\TranslatorInterface as LegacyTranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class FormView
@@ -360,9 +361,9 @@ class FormView implements FormViewInterface
     /**
      * Inject a translator to provide label translations
      *
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface|LegacyTranslatorInterface $translator
      */
-    public function setTranslator(TranslatorInterface $translator)
+    public function setTranslator(TranslatorInterface|LegacyTranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
